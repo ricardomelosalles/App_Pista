@@ -103,7 +103,20 @@ nav a.on{box-shadow:inset 0 3px 0 var(--acc)}
 .chart-track{height:10px;background:#e8eef7;border-radius:20px;overflow:hidden}.chart-track i{display:block;height:100%;background:linear-gradient(90deg,#1762f5,#53a2ff);border-radius:20px}
 .profile-action{width:100%;text-align:left;background:#fff;border:1px solid var(--line);margin:6px 0;padding:14px;border-radius:14px;font-size:15px}
 .note{font-size:12px;color:var(--mut);line-height:1.5}
+@media(max-width:430px){nav a{font-size:10px;padding-left:0;padding-right:0}}
 @media(min-width:560px){nav{justify-content:center}nav a{max-width:124px;font-size:13px}.metric-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+
+/* Treinador inteligente — análise e planos calculados localmente */
+select{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink)}
+.coach-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0}
+.coach-kpi{background:#f3f7fd;border:1px solid #e0e9f5;border-radius:14px;padding:12px}
+.coach-kpi strong{display:block;font:700 26px 'Barlow Condensed',sans-serif;color:#12345d}
+.coach-kpi span{font-size:12px;color:var(--mut)}
+.coach-tip{padding:12px;border-radius:14px;background:#f3f7fd;border-left:4px solid var(--acc);margin:8px 0}
+.coach-day{padding:12px 0;border-bottom:1px solid var(--line)}.coach-day:last-child{border-bottom:0}
+.coach-day b{display:block}.coach-day small{color:var(--mut)}
+.coach-tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:#e8f0ff;color:#1747b8;margin:4px 0}
 
 </style>
 </head>
@@ -162,6 +175,21 @@ nav a.on{box-shadow:inset 0 3px 0 var(--acc)}
   <button class="profile-action" id="exportAllGpx">⇧ Exportar trajetos GPX</button>
   <div class="panel"><b>Armazenamento e privacidade</b><p class="note">Suas corridas e perfil ficam salvos localmente neste navegador. O backup é manual; mantenha uma cópia fora do aparelho. O Pista não envia seus dados para um servidor.</p><p class="note" id="storageInfo"></p></div>
  </section>
+ <section id="s5" class="scr">
+  <h1>Treinador inteligente</h1>
+  <p class="note">Seu treinador analisa as corridas salvas neste aparelho e adapta as sugestões ao seu histórico. A análise funciona offline e não envia seus dados para servidores.</p>
+  <div class="panel">
+   <label for="coachGoal">Seu objetivo</label>
+   <select id="coachGoal"><option value="base">Construir resistência</option><option value="5k">Melhorar nos 5 km</option><option value="10k">Preparar para 10 km</option><option value="weight">Condicionamento e redução de peso</option></select>
+   <label for="coachLevel">Nível atual</label>
+   <select id="coachLevel"><option value="beginner">Iniciante / retomando</option><option value="intermediate">Intermediário</option><option value="advanced">Avançado</option></select>
+   <button class="main" id="coachGenerate" style="width:100%;margin-top:14px">Gerar plano adaptativo</button>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">Leitura da sua evolução</h2><div id="coachSummary"></div></div>
+  <div class="panel"><h2 style="margin-top:0">Orientação do treinador</h2><div id="coachAdvice"></div></div>
+  <div class="panel"><div class="row"><h2 style="margin:0">Plano desta semana</h2><span class="coach-tag" id="coachPlanTag">Personalizado</span></div><div id="coachPlan"></div><button class="sec" id="coachRebuild" style="width:100%;margin-top:12px">Atualizar plano com meus dados</button></div>
+  <p class="note">As recomendações são orientações gerais baseadas nos registros do Pista, não uma avaliação médica. Respeite dores, cansaço fora do normal e sua recuperação. Se estiver voltando após lesão ou tiver sintomas, procure orientação profissional.</p>
+ </section>
 </main>
 <nav>
  <a href="#" data-t="0" class="on">Correr</a>
@@ -169,6 +197,7 @@ nav a.on{box-shadow:inset 0 3px 0 var(--acc)}
  <a href="#" data-t="2">Metas</a>
  <a href="#" data-t="3">Desempenho</a>
  <a href="#" data-t="4">Perfil</a>
+ <a href="#" data-t="5">Treinador</a>
 </nav>
 <div id="sheet" hidden><div id="sin"></div></div>
 
@@ -178,6 +207,8 @@ const $=s=>document.querySelector(s);
 const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){alert('Sem espaço para salvar. Exporte e apague corridas antigas.')}}};
 let runs=store.get('pista.runs',[]),goal=store.get('pista.goal',20),gps=null;
 let profile=store.get('pista.profile',{name:''});
+let coachPrefs=store.get('pista.coachPrefs',{goal:'base',level:'beginner'});
+let coachPlan=store.get('pista.coachPlan',null);
 let S={st:'idle',pts:[],dist:0,act:0,last:0,splits:[],sg:[],si:0,s0:{e:0,d:0},laps:[],wid:null,tick:null,wl:null,gap:true,ptT:0,start:0};
 const pad=n=>String(n).padStart(2,'0');
 const fT=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return(h?h+':'+pad(m):m)+':'+pad(s%60)};
@@ -365,7 +396,7 @@ $('#bmain').onclick=toggle;$('#bend').onclick=finish;
 
 /* Telas */
 function tab(n){document.querySelectorAll('.scr').forEach((s,i)=>s.classList.toggle('on',i==n));document.querySelectorAll('nav a').forEach((a,i)=>a.classList.toggle('on',i==n));
- if(n==0)live();if(n==1)renderList();if(n==2)renderGoals();if(n==3)renderPerformance();if(n==4)renderProfile();$('main').scrollTop=0}
+ if(n==0)live();if(n==1)renderList();if(n==2)renderGoals();if(n==3)renderPerformance();if(n==4)renderProfile();if(n==5)renderCoach();$('main').scrollTop=0}
 document.querySelectorAll('nav a').forEach(a=>a.onclick=e=>{e.preventDefault();tab(+a.dataset.t)});
 const sorted=()=>[...runs].sort((a,b)=>b.date-a.date);
 function renderList(){const L=$('#list');
@@ -441,15 +472,95 @@ function renderPerformance(){
  $('#consistency').innerHTML=`<div class="row"><span>Corridas nos últimos 30 dias</span><b class="num">${recent.length}</b></div><div class="row"><span>Distância nos últimos 30 dias</span><b class="num">${(recent.reduce((a,r)=>a+r.dist,0)/1000).toFixed(1).replace('.',',')} km</b></div><div class="row"><span>Dias ativos nos últimos 30 dias</span><b class="num">${runDays}</b></div>`;
 }
 
+/* Treinador inteligente local: regras transparentes, sem enviar dados para a internet */
+function coachMetrics(){
+ const now=Date.now(),d28=28*86400000;
+ const recent=runs.filter(r=>Number(r.date)>=now-d28&&Number(r.dist)>0&&Number(r.time)>0);
+ const previous=runs.filter(r=>Number(r.date)>=now-2*d28&&Number(r.date)<now-d28&&Number(r.dist)>0);
+ const week=runs.filter(r=>Number(r.date)>=now-7*86400000&&Number(r.dist)>0);
+ const km28=recent.reduce((a,r)=>a+Number(r.dist),0)/1000;
+ const kmPrev=previous.reduce((a,r)=>a+Number(r.dist),0)/1000;
+ const km7=week.reduce((a,r)=>a+Number(r.dist),0)/1000;
+ const dates=recent.map(r=>Number(r.date)).sort((a,b)=>b-a);
+ const daysSince=dates.length?Math.max(0,Math.floor((now-dates[0])/86400000)):null;
+ const paceRuns=recent.filter(r=>r.dist>=1000).sort((a,b)=>b.date-a.date).slice(0,6);
+ const pace=paceRuns.length?paceRuns.reduce((a,r)=>a+r.time/(r.dist/1000),0)/paceRuns.length:null;
+ const change=kmPrev>0?(km28-kmPrev)/kmPrev*100:null;
+ return {recent,previous,week,km28,kmPrev,km7,weeklyAvg:km28/4,daysSince,pace,change,runCount:recent.length,weekCount:week.length};
+}
+function coachGoalName(g){return ({base:'Construir resistência','5k':'Melhorar nos 5 km','10k':'Preparar para 10 km',weight:'Condicionamento e redução de peso'})[g]||'Construir resistência'}
+function coachBuildPlan(m){
+ const goal=$('#coachGoal').value,level=$('#coachLevel').value;
+ const hasHistory=m.runCount>0;
+ let weekly=m.weeklyAvg;
+ if(!hasHistory)weekly=level==='beginner'?6:level==='intermediate'?9:12;
+ else weekly=Math.max(3,weekly);
+ // Não sugerir aumento superior a 10% sobre a média recente; se a carga recente caiu, usar a carga atual como referência.
+ const ceiling=m.weeklyAvg>0?m.weeklyAvg*1.10:weekly;
+ let target=Math.min(weekly,ceiling);
+ if(!hasHistory)target=weekly;
+ if(m.change!==null&&m.change>25)target=Math.min(target,m.kmPrev/4);
+ target=Math.max(hasHistory?Math.min(2,m.weeklyAvg):4, target);
+ const recovery=m.daysSince!==null&&m.daysSince>=7;
+ const easyOnly=level==='beginner'||target<9||m.weekCount<2;
+ let sessions=[];
+ if(!hasHistory){
+  sessions=[
+   {day:'Sessão 1',name:'Corrida e caminhada',detail:'20 minutos: alterne 1 min de trote confortável e 2 min caminhando.',kind:'easy'},
+   {day:'Sessão 2',name:'Movimento leve',detail:'25 minutos de caminhada ativa. Sem buscar velocidade.',kind:'walk'},
+   {day:'Sessão 3',name:'Corrida e caminhada',detail:'25 minutos em ritmo confortável, alternando trote e caminhada.',kind:'easy'}
+  ];
+ }else if(easyOnly){
+  sessions=[
+   {day:'Sessão 1',name:'Corrida leve',detail:`${Math.max(20,Math.round(target*3))} min em ritmo confortável; caminhe se precisar.`,kind:'easy'},
+   {day:'Sessão 2',name:'Corrida + caminhada',detail:`${Math.max(20,Math.round(target*2.5))} min sem forçar o ritmo.`,kind:'easy'},
+   {day:'Sessão 3',name:'Sessão contínua leve',detail:`${Math.max(25,Math.round(target*3.2))} min, terminando com sensação de que conseguiria continuar.`,kind:'easy'}
+  ];
+ }else{
+  const a=Math.max(2,target*.25),b=Math.max(2,target*.30),c=Math.max(3,target-a-b);
+  sessions=[
+   {day:'Sessão 1',name:'Rodagem leve',detail:`${a.toFixed(1).replace('.',',')} km em ritmo confortável.`,kind:'easy'},
+   {day:'Sessão 2',name:goal==='weight'?'Rodagem moderada':'Intervalos controlados',detail:goal==='weight'?`${b.toFixed(1).replace('.',',')} km em esforço moderado, sem sprint.`:`Aquecimento 10 min; 5 × 2 min em ritmo firme com 2 min leves; desaquecimento 5 min.`,kind:goal==='weight'?'easy':'interval'},
+   {day:'Sessão 3',name:'Corrida longa leve',detail:`${c.toFixed(1).replace('.',',')} km em ritmo fácil, sem tentar recorde.`,kind:'long'}
+  ];
+ }
+ const planObj={goal,level,target:+target.toFixed(1),sessions,createdAt:Date.now(),sourceRuns:m.runCount};
+ coachPlan=planObj;store.set('pista.coachPlan',coachPlan);return planObj;
+}
+function renderCoach(){
+ $('#coachGoal').value=coachPrefs.goal||'base';$('#coachLevel').value=coachPrefs.level||'beginner';
+ const m=coachMetrics();
+ const change=m.change===null?'Sem base anterior':(m.change>0?'+':'')+Math.round(m.change)+'%';
+ $('#coachSummary').innerHTML=`<div class="coach-kpis"><div class="coach-kpi"><strong>${m.km28.toFixed(1).replace('.',',')} km</strong><span>Distância nos últimos 28 dias</span></div><div class="coach-kpi"><strong>${m.runCount}</strong><span>Corridas nos últimos 28 dias</span></div><div class="coach-kpi"><strong>${m.km7.toFixed(1).replace('.',',')} km</strong><span>Distância nos últimos 7 dias</span></div><div class="coach-kpi"><strong>${m.pace?fP(m.pace)+'/km':'—'}</strong><span>Ritmo médio das últimas corridas</span></div></div><div class="note">Variação de volume em relação aos 28 dias anteriores: <b>${change}</b>${m.daysSince!==null?' · Última corrida: '+(m.daysSince===0?'hoje':m.daysSince+' dia(s) atrás'):''}.</div>`;
+ let advice=[];
+ if(!m.runCount)advice.push('Ainda não há corridas suficientes no histórico. Comece com sessões curtas de corrida e caminhada, em ritmo confortável.');
+ else if(m.change!==null&&m.change>25)advice.push('Seu volume aumentou mais de 25% em relação aos 28 dias anteriores. O treinador reduziu a meta sugerida para evitar uma progressão brusca.');
+ else if(m.change!==null&&m.change< -25)advice.push('Seu volume recente está menor que no período anterior. Retome gradualmente, sem tentar compensar as sessões perdidas.');
+ else advice.push('Seu volume recente está relativamente estável. Mantenha a regularidade antes de aumentar distância ou intensidade.');
+ if(m.daysSince!==null&&m.daysSince>=5)advice.push('Faz alguns dias desde a última corrida. Retome com uma sessão fácil e ajuste conforme sua sensação de esforço.');
+ else if(m.weekCount>=4)advice.push('Você já acumulou várias sessões nesta semana. Priorize recuperação entre treinos e evite transformar todas as corridas em testes de velocidade.');
+ if(m.pace)advice.push('Use o ritmo médio apenas como referência: faça as sessões leves em intensidade que permita conversar, sem perseguir um número no relógio.');
+ if(!m.recent.some(r=>r.hr&&Number(r.hr.avg)>0))advice.push('Ainda não há dados cardíacos suficientes para orientar zonas de frequência cardíaca; por isso, as sugestões usam distância, frequência e ritmo.');
+ $('#coachAdvice').innerHTML=advice.map(t=>`<div class="coach-tip">${t}</div>`).join('');
+ if(!coachPlan||!Array.isArray(coachPlan.sessions)||Number(coachPlan.sourceRuns)!==m.runCount||Date.now()-Number(coachPlan.createdAt||0)>7*86400000)coachBuildPlan(m);
+ const p=coachPlan;
+ $('#coachPlanTag').textContent=coachGoalName(p.goal);
+ $('#coachPlan').innerHTML=`<div class="row"><span>Volume semanal sugerido</span><b class="num">${Number(p.target||0).toFixed(1).replace('.',',')} km</b></div><p class="note">Plano criado ${new Date(p.createdAt||Date.now()).toLocaleDateString('pt-BR')}. Distribua as sessões com pelo menos um dia de recuperação entre elas. O volume é uma referência, não uma obrigação.</p>${p.sessions.map((x,i)=>`<div class="coach-day"><b>${x.day} · ${x.name}</b><small>${x.detail}</small>${x.kind==='interval'?'<div><span class="coach-tag">Intensidade controlada</span></div>':''}</div>`).join('')}`;
+}
+function saveCoachPrefs(){const next={goal:$('#coachGoal').value,level:$('#coachLevel').value};const changed=next.goal!==coachPrefs.goal||next.level!==coachPrefs.level;coachPrefs=next;store.set('pista.coachPrefs',coachPrefs);if(changed){coachPlan=null;store.set('pista.coachPlan',null);if($('#s5').classList.contains('on'))renderCoach()}}
+$('#coachGenerate').onclick=()=>{saveCoachPrefs();coachBuildPlan(coachMetrics());renderCoach()};
+$('#coachRebuild').onclick=()=>{saveCoachPrefs();coachBuildPlan(coachMetrics());renderCoach()};
+$('#coachGoal').onchange=saveCoachPrefs;$('#coachLevel').onchange=saveCoachPrefs;
+
 /* Perfil e backup */
 function renderProfile(){
  $('#runnerName').value=profile.name||'';
- let bytes=0;try{bytes=new Blob([JSON.stringify({runs,goal,profile})]).size}catch(e){}const kb=(bytes/1024).toFixed(1).replace('.',',');$('#storageInfo').textContent=`${runs.length} corrida(s) armazenada(s) neste navegador · aproximadamente ${kb} KB usados nos dados principais. O espaço disponível depende do navegador e do aparelho.`;
+ let bytes=0;try{bytes=new Blob([JSON.stringify({runs,goal,profile,coachPrefs,coachPlan})]).size}catch(e){}const kb=(bytes/1024).toFixed(1).replace('.',',');$('#storageInfo').textContent=`${runs.length} corrida(s) armazenada(s) neste navegador · aproximadamente ${kb} KB usados nos dados principais. O espaço disponível depende do navegador e do aparelho.`;
 }
 $('#saveProfile').onclick=()=>{profile={...profile,name:$('#runnerName').value.trim()};store.set('pista.profile',profile);alert('Perfil salvo.')};
 function downloadBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
-$('#exportBackup').onclick=()=>{const data={app:'Pista',schemaVersion:2,exportedAt:new Date().toISOString(),runs,goal,profile};downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'pista-backup-'+new Date().toISOString().slice(0,10)+'.json')};
-$('#importBackup').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.app!=='Pista'||!Array.isArray(data.runs)||!data.runs.every(r=>Number.isFinite(Number(r.id))&&Number.isFinite(Number(r.dist))&&Number.isFinite(Number(r.time))))throw new Error('Formato inválido');if(!confirm(`O backup contém ${data.runs.length} corrida(s). Deseja substituir os dados atuais?`))return;runs=data.runs;goal=Number(data.goal)>0?Number(data.goal):20;profile=data.profile&&typeof data.profile==='object'?data.profile:{name:''};store.set('pista.runs',runs);store.set('pista.goal',goal);store.set('pista.profile',profile);renderProfile();alert('Backup restaurado com sucesso.');}catch(err){alert('Não foi possível restaurar. Verifique se o arquivo é um backup válido do Pista.')}finally{e.target.value=''}};
+$('#exportBackup').onclick=()=>{const data={app:'Pista',schemaVersion:3,exportedAt:new Date().toISOString(),runs,goal,profile,coachPrefs,coachPlan};downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'pista-backup-'+new Date().toISOString().slice(0,10)+'.json')};
+$('#importBackup').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.app!=='Pista'||!Array.isArray(data.runs)||!data.runs.every(r=>Number.isFinite(Number(r.id))&&Number.isFinite(Number(r.dist))&&Number.isFinite(Number(r.time))))throw new Error('Formato inválido');if(!confirm(`O backup contém ${data.runs.length} corrida(s). Deseja substituir os dados atuais?`))return;runs=data.runs;goal=Number(data.goal)>0?Number(data.goal):20;profile=data.profile&&typeof data.profile==='object'?data.profile:{name:''};coachPrefs=data.coachPrefs&&typeof data.coachPrefs==='object'?data.coachPrefs:{goal:'base',level:'beginner'};coachPlan=data.coachPlan&&typeof data.coachPlan==='object'?data.coachPlan:null;store.set('pista.runs',runs);store.set('pista.goal',goal);store.set('pista.profile',profile);store.set('pista.coachPrefs',coachPrefs);store.set('pista.coachPlan',coachPlan);renderProfile();alert('Backup restaurado com sucesso.');}catch(err){alert('Não foi possível restaurar. Verifique se o arquivo é um backup válido do Pista.')}finally{e.target.value=''}};
 $('#exportAllGpx').onclick=()=>{const tracked=runs.filter(r=>Array.isArray(r.pts)&&r.pts.length>1);if(!tracked.length){alert('Não há trajetos GPS para exportar.');return}const esc=s=>String(s).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));let xml='<?xml version="1.0" encoding="UTF-8"?><gpx version="1.1" creator="Pista" xmlns="http://www.topografix.com/GPX/1/1">';for(const r of tracked){xml+=`<trk><name>${esc('Corrida '+new Date(r.date).toLocaleDateString('pt-BR'))}</name><trkseg>`;for(const pt of r.pts)xml+=`<trkpt lat="${pt[0]}" lon="${pt[1]}">${Number.isFinite(pt[4])?`<ele>${pt[4].toFixed(1)}</ele>`:''}<time>${new Date(r.date+pt[3]*1000).toISOString()}</time></trkpt>`;xml+='</trkseg></trk>'}xml+='</gpx>';downloadBlob(new Blob([xml],{type:'application/gpx+xml'}),'pista-todos-trajetos.gpx')};
 
 /* Detalhe, manual, GPX */
