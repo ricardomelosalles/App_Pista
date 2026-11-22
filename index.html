@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#081426">
-<meta name="description" content="Pista — acompanhe suas corridas, evolução e metas com GPS.">
+<meta name="description" content="Pista — acompanhe suas corridas, evolução e planos de treino com GPS.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Pista – corrida com GPS">
-<meta property="og:description" content="Registre corridas com GPS, acompanhe sua evolução e metas.">
+<meta property="og:description" content="Registre corridas com GPS e evolua com um treinador de corrida.">
 <title>Pista – corrida com GPS</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
@@ -141,6 +141,51 @@ nav a.on .navav{outline:2px solid var(--acc);outline-offset:1px}
 .wkstats{display:flex;flex-wrap:wrap;gap:14px 28px;margin:8px 0 16px}.wkstats small{display:block;color:var(--mut);font-size:14px}
 .wkstats b{font:700 28px/1.1 'Barlow Condensed','Arial Narrow',sans-serif}
 .wk div{font-size:9px}
+/* Treinador: identidade própria (azul-marinho e turquesa), só nesta tela */
+#s5 .co-hero{background:repeating-linear-gradient(115deg,rgba(25,211,197,.09) 0 2px,transparent 2px 28px),linear-gradient(140deg,#06182E 0%,#0B3A6B 62%,#0E7C86 130%);color:#fff;border-radius:22px;padding:18px 18px 16px;margin-bottom:12px;box-shadow:0 12px 30px rgba(6,24,46,.28)}
+#s5 .co-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#s5 .co-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#19D3C5;font-weight:600}
+#s5 .co-title{font:italic 700 30px/1.05 'Barlow Condensed','Arial Narrow',sans-serif;text-transform:uppercase;margin:4px 0}
+#s5 .co-phase{color:rgba(255,255,255,.82);font-size:15px}
+#s5 .co-dots{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:14px;color:rgba(255,255,255,.88)}
+#s5 .co-dots i{width:26px;height:8px;border-radius:4px;background:rgba(255,255,255,.2)}#s5 .co-dots i.on{background:#19D3C5}#s5 .co-dots span{margin-left:6px}
+#s5 .co-card{background:#fff;border:1px solid #DCE6EE;border-radius:18px;padding:14px 16px;margin:0 0 12px}
+#s5 .co-h2{font:700 21px/1.1 'Barlow Condensed','Arial Narrow',sans-serif;color:#06182E;margin:18px 2px 8px}
+#s5 .co-card .co-h2{margin:0 0 10px}
+#s5 summary{font-weight:600;cursor:pointer;color:#06182E}
+#s5 details ul{margin:8px 0 0;padding-left:20px;color:var(--mut);font-size:15px}
+#s5 .co-chips{display:flex;gap:8px;flex-wrap:wrap}
+#s5 .co-chip{border:2px solid #DCE6EE;border-radius:99px;padding:9px 14px;font-size:15px;background:#fff}
+#s5 .co-chip.on.ok{background:#E9FBF9;border-color:#14B8A6;color:#0B6E75}
+#s5 .co-chip.on.tired{background:#FFF8E8;border-color:#F59E0B;color:#6B4A07}
+#s5 .co-chip.on.pain{background:#FFF1F0;border-color:#E5534B;color:#7A1F18}
+#s5 .co-alert{background:#FFF1F0;border:1px solid #F5C2BE;color:#7A1F18;border-radius:12px;padding:10px 12px;margin:10px 0 12px;font-size:15px}
+#s5 .co-alert.warn{background:#FFF8E8;border-color:#F3D9A0;color:#6B4A07}
+#s5 .co-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+#s5 .co-k{background:#fff;border:1px solid #DCE6EE;border-top:4px solid var(--k);border-radius:14px;padding:10px 12px}
+#s5 .co-k small{display:block;color:var(--mut);font-size:13px}#s5 .co-k b{display:block;font-size:26px;line-height:1.15;color:#06182E}#s5 .co-k span{font-size:12px;color:var(--mut)}
+#s5 .co-s{display:flex;gap:12px;margin-bottom:10px;position:relative}
+#s5 .co-s:not(:last-child):before{content:"";position:absolute;left:15px;top:34px;bottom:-12px;width:2px;background:#DCE6EE}
+#s5 .co-dot{flex:none;width:32px;height:32px;border-radius:50%;background:var(--k);color:#fff;display:flex;align-items:center;justify-content:center;font:700 17px 'Barlow Condensed',sans-serif;z-index:1}
+#s5 .co-s.done .co-dot{background:#14B8A6}#s5 .co-s.done .co-sc{opacity:.72}
+#s5 .co-sc{flex:1;background:#fff;border:1px solid #DCE6EE;border-left:4px solid var(--k);border-radius:14px;padding:12px}
+#s5 .co-sc small{display:block;color:var(--mut);margin-top:4px;font-size:14px}
+#s5 .co-tag{font-size:12px;font-weight:700;color:var(--k);text-transform:uppercase;letter-spacing:.06em}
+#s5 .co-go{margin-top:10px;border:2px solid #19D3C5;color:#0B6E75;border-radius:99px;padding:8px 14px;font-size:15px;background:#E9FBF9}
+#s5 .co-ghost{width:100%;border:2px dashed #B8C8D6;color:#06182E;border-radius:14px;margin-top:2px}
+#s5 .co-tip{background:#fff;border:1px solid #DCE6EE;border-left:4px solid #3B82F6;border-radius:12px;padding:11px 13px;margin-bottom:8px;font-size:15px}
+#s5 .co-tip.ok{border-left-color:#14B8A6}#s5 .co-tip.warn{border-left-color:#F59E0B;background:#FFFBF2}
+#s5 .co-focus{border-radius:20px;padding:16px 18px;color:#fff;margin-bottom:12px;background:linear-gradient(135deg,var(--f1),var(--f2))}
+#s5 .co-focus .lbl{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;opacity:.9}
+#s5 .co-focus b{display:block;font:italic 700 27px/1.1 'Barlow Condensed','Arial Narrow',sans-serif;text-transform:uppercase;margin:8px 0 6px}
+#s5 .co-focus p{margin:0;font-size:16px;line-height:1.45}
+#s5 .co-focus.warn{--f1:#B45309;--f2:#F59E0B}#s5 .co-focus.ok{--f1:#0B6E75;--f2:#14B8A6}#s5 .co-focus.info{--f1:#0B3A6B;--f2:#3B82F6}
+#s5 .co-rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
+#s5 .co-rail::-webkit-scrollbar{display:none}
+#s5 .co-ins{flex:0 0 76%;scroll-snap-align:start;background:#fff;border:1px solid #DCE6EE;border-radius:16px;padding:14px}
+#s5 .co-ins .ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--k);color:#fff;margin-bottom:8px}
+#s5 .co-ins b{display:block;font-size:17px}#s5 .co-ins p{margin:4px 0 0;color:var(--mut);font-size:14.5px}
+#s5 .co-swipe{text-align:right;color:var(--mut);font-size:13px;margin:0 2px 4px}
 </style>
 </head>
 <body>
@@ -199,19 +244,31 @@ nav a.on .navav{outline:2px solid var(--acc);outline-offset:1px}
   </div>
  </section>
  <section id="s5" class="scr">
-  <h1>Treinador inteligente</h1>
-  <p class="note">Seu treinador analisa as corridas salvas neste aparelho e adapta as sugestões ao seu histórico. A análise funciona offline e não envia seus dados para servidores.</p>
-  <div class="panel">
-   <label for="coachGoal">Seu objetivo</label>
-   <select id="coachGoal"><option value="base">Construir resistência</option><option value="5k">Melhorar nos 5 km</option><option value="10k">Preparar para 10 km</option><option value="weight">Condicionamento e redução de peso</option></select>
+  <div class="co-hero">
+   <div class="co-top"><div><div class="co-kicker">Treinador inteligente</div><div class="co-title" id="coGoal">Plano</div><div class="co-phase" id="coPhase"></div></div><div id="coRing"></div></div>
+   <div class="co-dots" id="coDots"></div>
+  </div>
+  <div class="co-card"><div class="co-h2">Como você está hoje?</div><div class="co-chips" id="coCheck"></div><div id="coCheckMsg"></div></div>
+  <div class="co-kpis" id="coKpis"></div>
+  <div class="co-h2">Plano da semana</div>
+  <div id="coachPlan"></div>
+  <button class="co-ghost" id="coachRebuild">Recalcular plano com meus dados</button>
+  <div class="co-h2">Orientação do treinador</div>
+  <div id="coachAdvice"></div>
+  <details class="co-card"><summary>Por que este plano?</summary><div id="coWhyBody"></div></details>
+  <details class="co-card"><summary>Ajustar meu perfil de corrida</summary>
+   <label for="coachGoal">Objetivo principal</label>
+   <select id="coachGoal"><option value="base">Construir resistência</option><option value="5k">Melhorar nos 5 km</option><option value="10k">Preparar para 10 km</option><option value="half">Preparar para meia maratona (21,1 km)</option><option value="marathon">Preparar para maratona (42,2 km)</option><option value="speed">Melhorar velocidade</option><option value="return">Voltar a correr com segurança</option><option value="weight">Condicionamento físico</option></select>
    <label for="coachLevel">Nível atual</label>
    <select id="coachLevel"><option value="beginner">Iniciante / retomando</option><option value="intermediate">Intermediário</option><option value="advanced">Avançado</option></select>
-   <button class="main" id="coachGenerate" style="width:100%;margin-top:14px">Gerar plano adaptativo</button>
-  </div>
-  <div class="panel"><h2 style="margin-top:0">Leitura da sua evolução</h2><div id="coachSummary"></div></div>
-  <div class="panel"><h2 style="margin-top:0">Orientação do treinador</h2><div id="coachAdvice"></div></div>
-  <div class="panel"><div class="row"><h2 style="margin:0">Plano desta semana</h2><span class="coach-tag" id="coachPlanTag">Personalizado</span></div><div id="coachPlan"></div><button class="sec" id="coachRebuild" style="width:100%;margin-top:12px">Atualizar plano com meus dados</button></div>
-  <p class="note">As recomendações são orientações gerais baseadas nos registros do Pista, não uma avaliação médica. Respeite dores, cansaço fora do normal e sua recuperação. Se estiver voltando após lesão ou tiver sintomas, procure orientação profissional.</p>
+   <label for="coachDays">Quantos dias por semana você pode correr?</label>
+   <select id="coachDays"><option value="3">3 dias</option><option value="4">4 dias</option><option value="5">5 dias</option></select>
+   <label for="coachRace">Data da prova (opcional, para 5 km, 10 km, meia e maratona)</label>
+   <input type="date" id="coachRace">
+   <button class="main" id="coachGenerate" style="width:100%;margin-top:14px">Gerar meu planejamento</button>
+  </details>
+  <div class="co-card" style="opacity:.8"><div class="co-h2">Conversa com o treinador IA</div><p class="note" style="margin:0">Em breve, por um serviço seguro. Nenhuma chave de API fica neste HTML e seu histórico não é enviado sem uma integração protegida.</p></div>
+  <p class="note">As recomendações são orientações gerais e não substituem avaliação de profissional de educação física ou médico. Planos para meia maratona e maratona exigem base adequada, experiência e progressão individual. Não treine com dor persistente ou sintomas incomuns.</p>
  </section>
 </main>
 <nav>
@@ -337,7 +394,7 @@ const PRE=[{nome:'Corrida livre'},{nome:'6 × 400 m',aq:'10min',rep:6,tiro:'400m
 let plan=store.get('pista.plan',null);
 function parseSeg(x){const m=String(x||'').trim().toLowerCase().replace(',','.').match(/^(\d+(?:\.\d+)?)\s*(km|m|min|s)$/);if(!m)return null;const v=+m[1],u=m[2];return u==='km'?{t:'d',v:v*1000}:u==='m'?{t:'d',v}:u==='min'?{t:'t',v:v*60}:{t:'t',v}}
 const lab=q=>q.t==='t'?(q.v<60?q.v+' s':q.v%60?fT(q.v):q.v/60+' min'):(q.v>=1000?q.v/1000+' km':q.v+' m');
-function segs(d){if(!d||!d.rep)return[];const o=[],add=(n,x)=>{const p=parseSeg(x);if(p)o.push({n,...p})};add('Aquecimento',d.aq);for(let i=1;i<=d.rep;i++){add(`Tiro ${i}/${d.rep}`,d.tiro);if(i<d.rep)add(`Descanso ${i}/${d.rep}`,d.desc)}add('Desaquecimento',d.des);return o}
+function segs(d){if(!d||!d.rep)return[];const o=[],add=(n,x)=>{const p=parseSeg(x);if(p)o.push({n,...p})};add('Aquecimento',d.aq);for(let i=1;i<=d.rep;i++){add(d.rep>1?`${d.label||'Tiro'} ${i}/${d.rep}`:(d.label||'Tiro'),d.tiro);if(i<d.rep)add(`Descanso ${i}/${d.rep}`,d.desc)}add('Desaquecimento',d.des);return o}
 function segTick(){const q=S.sg[S.si];if(S.st!=='running'||!q)return;const e=el(),d=q.t==='t'?e-S.s0.e:S.dist-S.s0.d;
  if(d>=q.v){S.laps.push({n:q.n,t:+(e-S.s0.e).toFixed(1),d:Math.round(S.dist-S.s0.d)});S.s0={e,d:S.dist};S.si++;const nx=S.sg[S.si];say(nx?nx.n+', '+lab(nx):'Treino concluído. Bom trabalho!');if(navigator.vibrate)navigator.vibrate([300,100,300])}}
 function segUI(){const B=$('#seg');B.hidden=!S.sg.length;if(!S.sg.length)return;const q=S.sg[S.si];
@@ -522,85 +579,107 @@ function renderPerformance(){
 }
 
 /* Treinador inteligente local: regras transparentes, sem enviar dados para a internet */
+/* Treinador inteligente v2: carga, ritmos de referência, fase da prova, check-in e acompanhamento semanal */
+const CO_KIND={easy:{n:'Leve',c:'#14B8A6'},long:{n:'Longão',c:'#3B82F6'},interval:{n:'Qualidade',c:'#F97316'},walk:{n:'Caminhada',c:'#94A3B8'},run:{n:'Trote',c:'#14B8A6'}};
+const CO_MINW={'5k':6,'10k':8,half:12,marathon:16},CO_DAY=86400000;
+const fK1=v=>Number(v).toFixed(1).replace('.',','),fRange=a=>a?`${fP(a[0])}–${fP(a[1])} /km`:null;
+const coTodayKey=()=>new Date().toLocaleDateString('sv-SE');
+function coachCheckGet(){const c=store.get('pista.coachCheck',null);return c&&c.d===coTodayKey()?c.s:'ok'}
+function coachGoalName(g){return({base:'Construir resistência','5k':'Melhorar nos 5 km','10k':'Preparar para 10 km',half:'Preparar para meia maratona',marathon:'Preparar para maratona',speed:'Melhorar velocidade',return:'Retomar a corrida',weight:'Condicionamento físico'})[g]||'Construir resistência'}
 function coachMetrics(){
- const now=Date.now(),d28=28*86400000;
- const recent=runs.filter(r=>Number(r.date)>=now-d28&&Number(r.dist)>0&&Number(r.time)>0);
- const previous=runs.filter(r=>Number(r.date)>=now-2*d28&&Number(r.date)<now-d28&&Number(r.dist)>0);
- const week=runs.filter(r=>Number(r.date)>=now-7*86400000&&Number(r.dist)>0);
- const km28=recent.reduce((a,r)=>a+Number(r.dist),0)/1000;
- const kmPrev=previous.reduce((a,r)=>a+Number(r.dist),0)/1000;
- const km7=week.reduce((a,r)=>a+Number(r.dist),0)/1000;
- const dates=recent.map(r=>Number(r.date)).sort((a,b)=>b-a);
- const daysSince=dates.length?Math.max(0,Math.floor((now-dates[0])/86400000)):null;
- const paceRuns=recent.filter(r=>r.dist>=1000).sort((a,b)=>b.date-a.date).slice(0,6);
- const pace=paceRuns.length?paceRuns.reduce((a,r)=>a+r.time/(r.dist/1000),0)/paceRuns.length:null;
- const change=kmPrev>0?(km28-kmPrev)/kmPrev*100:null;
- return {recent,previous,week,km28,kmPrev,km7,weeklyAvg:km28/4,daysSince,pace,change,runCount:recent.length,weekCount:week.length};
-}
-function coachGoalName(g){return ({base:'Construir resistência','5k':'Melhorar nos 5 km','10k':'Preparar para 10 km',weight:'Condicionamento e redução de peso'})[g]||'Construir resistência'}
+ const now=Date.now(),ws=weekStart(now),valid=runs.filter(r=>r.dist>0&&r.time>0),sum=a=>a.reduce((s,r)=>s+r.dist,0)/1000,
+  wkKm=i=>{const a=weekStart(now,i);return sum(valid.filter(r=>r.date>=a&&r.date<a+7*CO_DAY))},
+  done=[wkKm(4),wkKm(3),wkKm(2),wkKm(1)],avg4=done.reduce((a,b)=>a+b,0)/4,
+  cur=valid.filter(r=>r.date>=ws).sort((a,b)=>a.date-b.date),
+  r28=valid.filter(r=>r.date>=now-28*CO_DAY),prev=valid.filter(r=>r.date>=now-56*CO_DAY&&r.date<now-28*CO_DAY),
+  last=valid.reduce((a,r)=>Math.max(a,r.date),0),pc=r=>r.time/(r.dist/1000),avgP=a=>a.reduce((s,r)=>s+pc(r),0)/a.length,
+  pr=valid.filter(r=>r.dist>=1000&&r.date>=now-60*CO_DAY).sort((a,b)=>b.date-a.date),
+  srt=pr.slice(0,8).map(pc).sort((a,b)=>a-b),med=srt.length?srt[Math.floor(srt.length/2)]:null,km7=sum(valid.filter(r=>r.date>=now-7*CO_DAY));
+ let b5=Infinity;valid.filter(r=>r.date>=now-90*CO_DAY).forEach(r=>{const t=bestDistanceTime(r,5000);if(t)b5=Math.min(b5,t)});
+ const p5=isFinite(b5)?b5/5:null;let easy=null,firm=null,src='';
+ if(p5){easy=[p5+55,p5+95];firm=[p5-8,p5+4];src='seu melhor 5 km'}else if(med){easy=[med,med+35];firm=[med-45,med-25];src='suas corridas recentes'}
+ return{cur,curKm:sum(cur),avg4,done,recoveryDue:done[0]>0&&done[1]>done[0]*1.03&&done[2]>done[1]*1.03&&done[3]>done[2]*1.03,
+  km28:sum(r28),kmPrev:sum(prev),km7,acwr:avg4>0?km7/avg4:null,daysSince:last?Math.floor((now-last)/CO_DAY):null,runCount:r28.length,
+  perWeek:valid.filter(r=>r.date>=weekStart(now,4)&&r.date<ws).length/4,easy,firm,src,
+  paceNow:pr.length>=3?avgP(pr.slice(0,3)):null,pacePrev:pr.length>=6?avgP(pr.slice(3,6)):null,hasHR:r28.some(r=>r.hr&&Number(r.hr.avg)>0)}}
+function coInterval(goal,level){
+ if(goal==='5k')return level!=='beginner'?{name:'Tiros de 400 m',detail:'Aquecimento 10 min; 6 × 400 m firmes com 90 s leves; desaquecimento 8 min.',plan:{nome:'6 × 400 m',aq:'10min',rep:6,tiro:'400m',desc:'90s',des:'8min'}}:{name:'Intervalos curtos',detail:'Aquecimento 10 min; 5 × 2 min firmes com 2 min leves; desaquecimento 5 min.',plan:{nome:'5 × 2 min',aq:'10min',rep:5,tiro:'2min',desc:'2min',des:'5min'}};
+ if(goal==='10k')return{name:'Ritmo de limiar',detail:'Aquecimento 10 min; 4 × 4 min em esforço firme com 2 min leves; desaquecimento 8 min.',plan:{nome:'4 × 4 min',aq:'10min',rep:4,tiro:'4min',desc:'2min',des:'8min'}};
+ if(goal==='half'||goal==='marathon'){const L=goal==='half'?8:10;return{name:'Ritmo de prova',detail:`Aquecimento 10 min; 3 × ${L} min em ritmo de prova com 2 min leves; desaquecimento 8 min.`,plan:{nome:`3 × ${L} min`,aq:'10min',rep:3,tiro:L+'min',desc:'2min',des:'8min'}}}
+ return{name:'Estímulos de velocidade',detail:'Aquecimento 10 min; 8 × 1 min rápidos (sem sprint) com 2 min leves; desaquecimento 5 min.',plan:{nome:'8 × 1 min',aq:'10min',rep:8,tiro:'1min',desc:'2min',des:'5min'}}}
 function coachBuildPlan(m){
- const goal=$('#coachGoal').value,level=$('#coachLevel').value;
- const hasHistory=m.runCount>0;
- let weekly=m.weeklyAvg;
- if(!hasHistory)weekly=level==='beginner'?6:level==='intermediate'?9:12;
- else weekly=Math.max(3,weekly);
- // Não sugerir aumento superior a 10% sobre a média recente; se a carga recente caiu, usar a carga atual como referência.
- const ceiling=m.weeklyAvg>0?m.weeklyAvg*1.10:weekly;
- let target=Math.min(weekly,ceiling);
- if(!hasHistory)target=weekly;
- if(m.change!==null&&m.change>25)target=Math.min(target,m.kmPrev/4);
- target=Math.max(hasHistory?Math.min(2,m.weeklyAvg):4, target);
- const recovery=m.daysSince!==null&&m.daysSince>=7;
- const easyOnly=level==='beginner'||target<9||m.weekCount<2;
+ const P=coachPrefs,goal=P.goal||'base',level=P.level||'beginner',days=Number(P.days||3),reasons=[],hist=m.avg4>0;
+ let target=hist?m.avg4*1.08:(level==='beginner'?6:level==='intermediate'?12:18);
+ reasons.push(hist?`Média das últimas 4 semanas completas: ${fK1(m.avg4)} km; a meta sobe no máximo cerca de 8%.`:'Sem corridas nas últimas 4 semanas: recomeço gradual pelo nível informado.');
+ if(m.recoveryDue){target=m.avg4*.8;reasons.push('Três semanas seguidas de aumento: esta é uma semana de recuperação, com cerca de 20% menos volume.')}
+ else if(m.acwr!==null&&m.acwr>1.3){target=Math.min(target,m.avg4);reasons.push('A carga dos últimos 7 dias está acima da sua média: o volume foi mantido, sem aumento.')}
+ if(hist&&m.daysSince!==null&&m.daysSince>=10){target*=.75;reasons.push(`Última corrida há ${m.daysSince} dias: retomada com 25% menos volume.`)}
+ const minW=CO_MINW[goal],race=minW&&P.race?new Date(P.race+'T12:00:00').getTime():0,wr=race?Math.ceil((race-Date.now())/(7*CO_DAY)):null;
+ let phase=minW?'Construção':'Construção de base',warning='';
+ if(wr!==null&&wr>=0){
+  phase=wr<=1?'Semana da prova':wr<=2?'Polimento':wr<=Math.max(3,Math.round(minW*.35))?'Pico':wr>=minW*2?'Base':'Construção';
+  if(wr<=1){target*=.5;reasons.push('Semana da prova: volume reduzido pela metade para chegar descansado.')}
+  else if(wr<=2){target*=.7;reasons.push('Polimento: volume reduzido em cerca de 30%.')}
+  if(wr<minW*.7)warning=`Faltam ${wr} semana(s) para a prova, menos que o ideal para este objetivo. O plano prioriza chegar bem, não bater tempo.`;
+ }else if(race&&wr<0)reasons.push('A data da prova informada já passou e foi ignorada.');
+ if((goal==='half'||goal==='marathon')&&!warning)warning=(level==='beginner'||m.avg4<20)?'Prova longa: esta semana é uma etapa de base, não um ciclo completo. A preparação específica só deve começar com histórico e volume adequados.':'Para prova longa, a evolução é gradual e inclui semanas de recuperação. Este plano semanal é uma orientação inicial.';
+ target=Math.max(hist?Math.min(2,m.avg4):4,target);
+ const easyOnly=level==='beginner'||target<12||!hist||goal==='return'||phase==='Semana da prova'||m.perWeek<2;
+ const names=Array.from({length:days},(_,i)=>'Sessão '+(i+1)),ez=fRange(m.easy),fm=fRange(m.firm),r5=v=>Math.max(1,Math.round(v*2)/2);
  let sessions=[];
- if(!hasHistory){
-  sessions=[
-   {day:'Sessão 1',name:'Corrida e caminhada',detail:'20 minutos: alterne 1 min de trote confortável e 2 min caminhando.',kind:'easy'},
-   {day:'Sessão 2',name:'Movimento leve',detail:'25 minutos de caminhada ativa. Sem buscar velocidade.',kind:'walk'},
-   {day:'Sessão 3',name:'Corrida e caminhada',detail:'25 minutos em ritmo confortável, alternando trote e caminhada.',kind:'easy'}
-  ];
- }else if(easyOnly){
-  sessions=[
-   {day:'Sessão 1',name:'Corrida leve',detail:`${Math.max(20,Math.round(target*3))} min em ritmo confortável; caminhe se precisar.`,kind:'easy'},
-   {day:'Sessão 2',name:'Corrida + caminhada',detail:`${Math.max(20,Math.round(target*2.5))} min sem forçar o ritmo.`,kind:'easy'},
-   {day:'Sessão 3',name:'Sessão contínua leve',detail:`${Math.max(25,Math.round(target*3.2))} min, terminando com sensação de que conseguiria continuar.`,kind:'easy'}
-  ];
- }else{
-  const a=Math.max(2,target*.25),b=Math.max(2,target*.30),c=Math.max(3,target-a-b);
-  sessions=[
-   {day:'Sessão 1',name:'Rodagem leve',detail:`${a.toFixed(1).replace('.',',')} km em ritmo confortável.`,kind:'easy'},
-   {day:'Sessão 2',name:goal==='weight'?'Rodagem moderada':'Intervalos controlados',detail:goal==='weight'?`${b.toFixed(1).replace('.',',')} km em esforço moderado, sem sprint.`:`Aquecimento 10 min; 5 × 2 min em ritmo firme com 2 min leves; desaquecimento 5 min.`,kind:goal==='weight'?'easy':'interval',plan:goal==='weight'?null:{nome:'5 × 2 min',aq:'10min',rep:5,tiro:'2min',desc:'2min',des:'5min'}},
-   {day:'Sessão 3',name:'Corrida longa leve',detail:`${c.toFixed(1).replace('.',',')} km em ritmo fácil, sem tentar recorde.`,kind:'long'}
-  ];
- }
- const planObj={goal,level,target:+target.toFixed(1),sessions,createdAt:Date.now(),sourceRuns:m.runCount};
- coachPlan=planObj;store.set('pista.coachPlan',coachPlan);return planObj;
-}
+ if(!hist)sessions=names.map((day,i)=>i%2===0?{day,name:'Trote e caminhada',detail:'Alterne 1 min de trote leve com 2 min de caminhada, por cerca de 25 minutos.',kind:'run',plan:{nome:'8 × 1 min de trote',label:'Trote',aq:'5min',rep:8,tiro:'1min',desc:'2min',des:'5min'}}:{day,name:'Caminhada ativa',detail:'25 minutos em passo firme, sem buscar velocidade.',kind:'walk',plan:{nome:'Caminhada 25 min',label:'Caminhada',rep:1,tiro:'25min'}});
+ else{
+  const q=!easyOnly&&['5k','10k','half','marathon','speed'].includes(goal),ec=Math.max(1,days-1-(q?1:0)),ls=(days===3?.40:.34)+(goal==='marathon'?.04:goal==='half'?.03:0),longKm=Math.max(2,target*ls),ek=Math.max(1,target*(1-ls-(q?.24:0))/ec);
+  names.forEach((day,i)=>{
+   if(i===days-1)sessions.push({day,name:'Corrida longa leve',detail:`${fK1(r5(longKm))} km bem fáceis${ez?` (~${ez})`:''}. Aumente a duração aos poucos; não é dia de prova.`,kind:'long',plan:{nome:`Longão ${fK1(r5(longKm))} km`,label:'Longão',rep:1,tiro:r5(longKm)+'km'}});
+   else if(i===1&&q){const x=coInterval(goal,level);sessions.push({day,name:x.name,detail:x.detail+(fm?` Esforço firme ≈ ${fm}.`:'')+' Só se estiver descansado.',kind:'interval',plan:x.plan})}
+   else sessions.push({day,name:i===0?'Rodagem leve':'Corrida fácil',detail:`${fK1(r5(ek))} km em ritmo confortável${ez?` (~${ez})`:''}; deve dar para conversar.`,kind:'easy',plan:{nome:`Rodagem ${fK1(r5(ek))} km`,label:'Rodagem',rep:1,tiro:r5(ek)+'km'}});
+  })}
+ coachPlan={week:weekStart(Date.now()),goal,level,days,race:P.race||'',phase,wr:wr!==null&&wr>=0?wr:null,target:+target.toFixed(1),sessions,reasons,warning,createdAt:Date.now()};
+ store.set('pista.coachPlan',coachPlan);return coachPlan}
+const CHECK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+function coRing(pct,big,small){const R=38,C=2*Math.PI*R,o=C*(1-Math.min(100,Math.max(0,pct))/100);
+ return `<svg viewBox="0 0 100 100" width="104" height="104"><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="9"/><circle cx="50" cy="50" r="${R}" fill="none" stroke="#19D3C5" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${o.toFixed(1)}" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" fill="#fff" font-size="22" font-weight="700" font-family="Barlow Condensed,Arial Narrow,sans-serif">${big}</text><text x="50" y="66" text-anchor="middle" fill="rgba(255,255,255,.78)" font-size="10" font-family="Barlow,sans-serif">${small}</text></svg>`}
 function renderCoach(){
- $('#coachGoal').value=coachPrefs.goal||'base';$('#coachLevel').value=coachPrefs.level||'beginner';
+ const P=coachPrefs;$('#coachGoal').value=P.goal||'base';$('#coachLevel').value=P.level||'beginner';$('#coachDays').value=String(P.days||3);$('#coachRace').value=P.race||'';
  const m=coachMetrics();
- const change=m.change===null?'Sem base anterior':(m.change>0?'+':'')+Math.round(m.change)+'%';
- $('#coachSummary').innerHTML=`<div class="coach-kpis"><div class="coach-kpi"><strong>${m.km28.toFixed(1).replace('.',',')} km</strong><span>Distância nos últimos 28 dias</span></div><div class="coach-kpi"><strong>${m.runCount}</strong><span>Corridas nos últimos 28 dias</span></div><div class="coach-kpi"><strong>${m.km7.toFixed(1).replace('.',',')} km</strong><span>Distância nos últimos 7 dias</span></div><div class="coach-kpi"><strong>${m.pace?fP(m.pace)+'/km':'—'}</strong><span>Ritmo médio das últimas corridas</span></div></div><div class="note">Variação de volume em relação aos 28 dias anteriores: <b>${change}</b>${m.daysSince!==null?' · Última corrida: '+(m.daysSince===0?'hoje':m.daysSince+' dia(s) atrás'):''}.</div>`;
- let advice=[];
- if(!m.runCount)advice.push('Ainda não há corridas suficientes no histórico. Comece com sessões curtas de corrida e caminhada, em ritmo confortável.');
- else if(m.change!==null&&m.change>25)advice.push('Seu volume aumentou mais de 25% em relação aos 28 dias anteriores. O treinador reduziu a meta sugerida para evitar uma progressão brusca.');
- else if(m.change!==null&&m.change< -25)advice.push('Seu volume recente está menor que no período anterior. Retome gradualmente, sem tentar compensar as sessões perdidas.');
- else advice.push('Seu volume recente está relativamente estável. Mantenha a regularidade antes de aumentar distância ou intensidade.');
- if(m.daysSince!==null&&m.daysSince>=5)advice.push('Faz alguns dias desde a última corrida. Retome com uma sessão fácil e ajuste conforme sua sensação de esforço.');
- else if(m.weekCount>=4)advice.push('Você já acumulou várias sessões nesta semana. Priorize recuperação entre treinos e evite transformar todas as corridas em testes de velocidade.');
- if(m.pace)advice.push('Use o ritmo médio apenas como referência: faça as sessões leves em intensidade que permita conversar, sem perseguir um número no relógio.');
- if(!m.recent.some(r=>r.hr&&Number(r.hr.avg)>0))advice.push('Ainda não há dados cardíacos suficientes para orientar zonas de frequência cardíaca; por isso, as sugestões usam distância, frequência e ritmo.');
- $('#coachAdvice').innerHTML=advice.map(t=>`<div class="coach-tip">${t}</div>`).join('');
- if(!coachPlan||!Array.isArray(coachPlan.sessions)||Number(coachPlan.sourceRuns)!==m.runCount||Date.now()-Number(coachPlan.createdAt||0)>7*86400000)coachBuildPlan(m);
- const p=coachPlan;
- $('#coachPlanTag').textContent=coachGoalName(p.goal);
- $('#coachPlan').innerHTML=`<div class="row"><span>Volume semanal sugerido</span><b class="num">${Number(p.target||0).toFixed(1).replace('.',',')} km</b></div><p class="note">Plano criado ${new Date(p.createdAt||Date.now()).toLocaleDateString('pt-BR')}. Distribua as sessões com pelo menos um dia de recuperação entre elas. O volume é uma referência, não uma obrigação.</p>${p.sessions.map((x,i)=>`<div class="coach-day"><b>${x.day} · ${x.name}</b><small>${x.detail}</small>${x.kind==='interval'?'<div><span class="coach-tag">Intensidade controlada</span></div>':''}${x.kind==='interval'&&x.plan?`<button class="sec" style="margin-top:6px" data-i="${i}">Usar na tela Correr</button>`:''}</div>`).join('')}`;
- $('#coachPlan').querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{plan=coachPlan.sessions[+b.dataset.i].plan;store.set('pista.plan',plan);tab(0);ui()});
-}
-function saveCoachPrefs(){const next={goal:$('#coachGoal').value,level:$('#coachLevel').value};const changed=next.goal!==coachPrefs.goal||next.level!==coachPrefs.level;coachPrefs=next;store.set('pista.coachPrefs',coachPrefs);if(changed){coachPlan=null;store.set('pista.coachPlan',null);if($('#s5').classList.contains('on'))renderCoach()}}
+ if(!coachPlan||coachPlan.week!==weekStart(Date.now())||!Array.isArray(coachPlan.sessions)||coachPlan.goal!==(P.goal||'base')||coachPlan.level!==(P.level||'beginner')||coachPlan.days!==Number(P.days||3)||(coachPlan.race||'')!==(P.race||''))coachBuildPlan(m);
+ const p=coachPlan,chk=coachCheckGet(),doneN=Math.min(p.sessions.length,m.cur.filter(r=>r.dist>=1000).length);
+ $('#coGoal').textContent=coachGoalName(p.goal);
+ $('#coPhase').textContent=(p.phase||'Plano semanal')+(p.wr!==null?` · ${p.wr} sem. para a prova`:'');
+ $('#coRing').innerHTML=coRing(p.target?m.curKm/p.target*100:0,fK1(m.curKm),'de '+fK1(p.target)+' km');
+ $('#coDots').innerHTML=p.sessions.map((_,i)=>`<i class="${i<doneN?'on':''}"></i>`).join('')+`<span>${doneN} de ${p.sessions.length} sessões</span>`;
+ $('#coCheck').innerHTML=[['ok','Descansado'],['tired','Cansado'],['pain','Dor ou incômodo']].map(([k,t])=>`<button class="co-chip${chk===k?' on '+k:''}" data-k="${k}">${t}</button>`).join('');
+ $('#coCheck').querySelectorAll('button').forEach(b=>b.onclick=()=>{store.set('pista.coachCheck',{d:coTodayKey(),s:b.dataset.k});renderCoach()});
+ $('#coCheckMsg').innerHTML=chk==='pain'?'<div class="co-alert">Priorize descanso hoje. Se a dor persistir ou piorar, procure um profissional de saúde antes de voltar a treinar.</div>':chk==='tired'?'<div class="co-alert warn">Cansaço registrado: os treinos de qualidade viram corrida leve.</div>':'';
+ const ac=m.acwr,acS=ac===null?'sem base':ac>1.3?'alta':ac<.7?'baixa':'equilibrada',acC=ac===null?'#94A3B8':ac>1.3?'#F59E0B':ac<.7?'#3B82F6':'#14B8A6';
+ $('#coKpis').innerHTML=[['Carga',ac===null?'—':fK1(ac)+'×','7 dias vs. média · '+acS,acC],['Consistência',m.perWeek?fK1(m.perWeek)+'/sem':'—','corridas por semana (4 sem.)','#14B8A6'],['Ritmo leve',fRange(m.easy)||'—',m.src?'ref.: '+m.src:'ainda sem dados','#3B82F6'],['Ritmo firme',fRange(m.firm)||'—',m.src?'para os tiros':'ainda sem dados','#F97316']].map(k=>`<div class="co-k" style="--k:${k[3]}"><small>${k[0]}</small><b class="num">${k[1]}</b><span>${k[2]}</span></div>`).join('');
+ const tiredPlan={nome:'Leve 25 min',label:'Leve',rep:1,tiro:'25min'};
+ $('#coachPlan').innerHTML=(p.warning?`<div class="co-alert warn">${p.warning}</div>`:'')+p.sessions.map((x,i)=>{
+  const adj=chk==='tired'&&x.kind==='interval',k=CO_KIND[adj?'easy':x.kind]||CO_KIND.easy,done=i<doneN;
+  return `<div class="co-s${done?' done':''}" style="--k:${k.c}"><div class="co-dot">${done?CHECK:i+1}</div><div class="co-sc"><div class="row"><b>${adj?'Corrida leve (ajustada)':esc(x.name)}</b><span class="co-tag">${k.n}</span></div><small>${adj?'Troque os intervalos por 20 a 30 minutos bem leves, ou descanse.':x.detail}</small>${x.plan&&!done&&chk!=='pain'?`<button class="co-go" data-i="${i}">Usar na tela Correr</button>`:''}</div></div>`}).join('');
+ $('#coachPlan').querySelectorAll('.co-go').forEach(b=>b.onclick=()=>{const x=p.sessions[+b.dataset.i];plan=chk==='tired'&&x.kind==='interval'?tiredPlan:x.plan;store.set('pista.plan',plan);tab(0);ui()});
+ const A=[];
+ if(!m.runCount&&m.daysSince===null)A.push(['info','Primeiros passos','Ainda não há corridas no histórico. Comece leve e curto: criar o hábito vale mais que ritmo.']);
+ if(ac!==null&&ac>1.3)A.push(['warn','Carga alta',`Sua carga dos últimos 7 dias está ${Math.round((ac-1)*100)}% acima da média das últimas 4 semanas. Evite somar intensidade agora.`]);
+ else if(ac!==null&&ac<.7&&m.avg4>0)A.push(['info','Carga baixa','Carga recente abaixo da sua média. Retome com regularidade antes de aumentar a distância.']);
+ else if(ac!==null)A.push(['ok','Carga equilibrada','Boa base em relação à sua média recente. Mantenha a regularidade.']);
+ if(m.recoveryDue)A.push(['warn','Semana de recuperação','Você subiu o volume por três semanas seguidas. Uma semana mais leve ajuda o corpo a absorver o treino.']);
+ if(m.daysSince!==null&&m.daysSince>=5)A.push(['info','Retomada',`Faz ${m.daysSince} dias desde a última corrida. Volte com uma sessão fácil.`]);
+ if(m.perWeek&&m.perWeek<p.days-1)A.push(['info','Regularidade',`Você correu em média ${fK1(m.perWeek)} vez(es) por semana; o plano pede ${p.days}. Comece cumprindo as duas primeiras sessões.`]);
+ if(m.paceNow&&m.pacePrev){const d=m.paceNow-m.pacePrev;A.push(d<-5?['ok','Ritmo melhorando',`Nas 3 últimas corridas você ficou ${Math.round(-d)} s/km mais rápido que nas 3 anteriores.`]:d>5?['info','Ritmo mais lento',`Nas 3 últimas corridas o ritmo ficou ${Math.round(d)} s/km mais lento: comum em fase de carga ou com cansaço.`]:['info','Ritmo estável','Seu ritmo está estável. Priorize a regularidade.'])}
+ if(p.wr!==null)A.push(['info','Fase: '+p.phase,p.phase==='Pico'?'Mantenha a qualidade e proteja o sono.':p.phase==='Base'?'Foco em volume leve e regularidade.':p.phase==='Polimento'||p.phase==='Semana da prova'?'Menos volume e mais descanso; não teste nada novo.':'Aumente de forma gradual.']);
+ if(!m.hasHR)A.push(['info','Frequência cardíaca','Sem dados recentes de batimentos: as sugestões usam distância, frequência e ritmo.']);
+ const IC={warn:'<path d="M12 4 3 20h18L12 4z"/><path d="M12 10v4M12 17v.5"/>',ok:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.5"/>'},icon=t=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[t]}</svg>`;
+ const fi=['warn','ok','info'].map(t=>A.findIndex(a=>a[0]===t)).find(i=>i>=0),F=A[fi],R=A.filter((_,i)=>i!==fi),KC={warn:'#F59E0B',ok:'#14B8A6',info:'#3B82F6'};
+ $('#coachAdvice').innerHTML=F?`<div class="co-focus ${F[0]}"><div class="lbl">${icon(F[0])}${F[0]==='warn'?'Atenção agora':F[0]==='ok'?'Tudo certo':'Foco da semana'}</div><b>${F[1]}</b><p>${F[2]}</p></div>`+(R.length?`<div class="co-rail">${R.map(a=>`<div class="co-ins" style="--k:${KC[a[0]]}"><div class="ic">${icon(a[0])}</div><b>${a[1]}</b><p>${a[2]}</p></div>`).join('')}</div>${R.length>1?'<div class="co-swipe">Deslize para ver mais →</div>':''}`:''):'';
+ $('#coWhyBody').innerHTML='<ul>'+p.reasons.map(r=>`<li>${r}</li>`).join('')+`<li>${p.days} sessões por semana, com a corrida longa por último e descanso entre as sessões.</li></ul>`}
+function saveCoachPrefs(){const next={goal:$('#coachGoal').value,level:$('#coachLevel').value,days:Number($('#coachDays').value||3),race:$('#coachRace').value||''};
+ const ch=next.goal!==coachPrefs.goal||next.level!==coachPrefs.level||next.days!==Number(coachPrefs.days||3)||next.race!==(coachPrefs.race||'');
+ coachPrefs=next;store.set('pista.coachPrefs',coachPrefs);if(ch){coachPlan=null;store.set('pista.coachPlan',null);if($('#s5').classList.contains('on'))renderCoach()}}
 $('#coachGenerate').onclick=()=>{saveCoachPrefs();coachBuildPlan(coachMetrics());renderCoach()};
 $('#coachRebuild').onclick=()=>{saveCoachPrefs();coachBuildPlan(coachMetrics());renderCoach()};
-$('#coachGoal').onchange=saveCoachPrefs;$('#coachLevel').onchange=saveCoachPrefs;
+['#coachGoal','#coachLevel','#coachDays','#coachRace'].forEach(x=>$(x).onchange=saveCoachPrefs);
 
 /* Perfil e backup */
 const USER_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.7"/><path d="M4.5 20c.8-4 3.8-6 7.5-6s6.7 2 7.5 6"/></svg>',FLAME='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.48 12.35c-1.57-4.08-7.16-4.3-5.81-10.23.1-.44-.37-.78-.75-.55C9.29 3.71 6.68 8 8.87 13.62c.18.46-.36.89-.75.59-1.81-1.37-2-3.34-1.84-4.75.06-.52-.62-.77-.91-.34C4.69 10.16 4 11.84 4 14.37c.38 5.6 5.11 7.32 6.81 7.54 2.43.31 5.06-.14 6.95-1.87 2.08-1.93 2.84-5.01 1.72-7.69zm-9.28 5.03c1.44-.35 2.18-1.39 2.38-2.31.33-1.43-.96-2.83-.09-5.09.33 1.87 3.27 3.04 3.27 5.08.08 2.53-2.66 4.7-5.56 2.32z"/></svg>';
@@ -692,7 +771,15 @@ let ip=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;$
 $('#binst').onclick=async()=>{if(!ip)return;ip.prompt();await ip.userChoice;ip=null;$('#binst').hidden=true};
 addEventListener('appinstalled',()=>{$('#binst').hidden=true});
 const sp=$('#splash');let seen=false;try{seen=sessionStorage.getItem('pista.sp')}catch(e){}
-if(seen)sp.remove();else{try{sessionStorage.setItem('pista.sp','1')}catch(e){}setTimeout(()=>{sp.classList.add('off');setTimeout(()=>sp.remove(),500)},1400)}
+let spT=0;function endSplash(){clearTimeout(spT);sp.classList.add('off');setTimeout(()=>sp.remove(),500)}
+if(seen)sp.remove();else{try{sessionStorage.setItem('pista.sp','1')}catch(e){}
+ /* Vídeo de abertura opcional: se existir intro.mp4 ao lado do index.html ele toca (com som no app Android; mudo no navegador); senão fica só a imagem. Toque na tela para pular. */
+ spT=setTimeout(endSplash,2200);sp.onclick=endSplash;
+ const v=document.createElement('video');v.muted=!NATIVE;v.defaultMuted=!NATIVE;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.preload='auto';
+ v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s';
+ v.onplaying=()=>{clearTimeout(spT);v.style.opacity=1;spT=setTimeout(endSplash,9000)};
+ v.onended=endSplash;v.onerror=()=>{clearTimeout(spT);spT=setTimeout(endSplash,1200)};
+ v.src='intro.mp4';sp.appendChild(v);try{const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{v.muted=true;v.play().catch(()=>{})})}catch(e){}}
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
 if(NATIVE)try{Capacitor.registerPlugin('LocalNotifications').requestPermissions().catch(()=>{})}catch(e){}
 navAvatar();restoreActiveSession();
