@@ -1,4 +1,4 @@
-const C='pista-v5',SH=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png','logo.png','splash.jpg'],LF='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.';
+const C='pista-v6',SH=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png','logo.png','splash.jpg'],LF='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.';
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>Promise.all([c.addAll(SH),...['css','js'].map(x=>c.add(LF+x).catch(()=>{}))])).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>clients.claim()))});
 self.addEventListener('fetch',e=>{const r=e.request,u=new URL(r.url);if(r.method!=='GET')return;

@@ -118,6 +118,26 @@ select{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid 
 .coach-day b{display:block}.coach-day small{color:var(--mut)}
 .coach-tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:#e8f0ff;color:#1747b8;margin:4px 0}
 
+/* Perfil e navegação inspirados no Strava, na identidade do Pista */
+nav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:8px 2px 10px;color:var(--mut)}
+nav a.on{box-shadow:none;color:var(--acc)}nav a.on svg{stroke-width:2.2}
+nav svg{width:26px;height:26px}.navav{width:26px;height:26px;border-radius:50%;object-fit:cover;display:block}
+nav a.on .navav{outline:2px solid var(--acc);outline-offset:1px}
+@media(max-width:430px){nav a{font-size:11px}}
+.pf-head{display:flex;align-items:center;gap:16px;margin:4px 0 12px}
+.pf-av{width:84px;height:84px;border-radius:50%;overflow:hidden;background:var(--line);color:var(--mut);display:flex;align-items:center;justify-content:center;padding:0;flex:none}
+.pf-av img{width:100%;height:100%;object-fit:cover}.pf-av svg{width:46px;height:46px}
+.pf-name{font:700 28px/1.1 'Barlow Condensed','Arial Narrow',sans-serif}.pf-sub{color:var(--mut);font-size:17px;margin-top:2px}
+.pf-streak{display:flex;align-items:center;gap:8px;font-size:17px;margin:6px 0 14px}.pf-streak svg{width:22px;height:22px;fill:var(--acc);stroke:none}
+.pf-btns{display:flex;gap:10px}.pf-btn{flex:1;border:2px solid var(--line);background:#fff;border-radius:99px;padding:12px 8px;font-size:16px}
+.pf-tabs{display:flex;border-bottom:1px solid var(--line);margin:18px -2px 14px}
+.pf-tabs button{flex:1;padding:12px 2px;font-size:15px;color:var(--mut);border-radius:0;border-bottom:3px solid transparent}
+.pf-tabs button.on{color:var(--ink);border-color:var(--acc)}
+.pf-pane{display:none}.pf-pane.on{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.wkstats{display:flex;flex-wrap:wrap;gap:14px 28px;margin:8px 0 16px}.wkstats small{display:block;color:var(--mut);font-size:14px}
+.wkstats b{font:700 28px/1.1 'Barlow Condensed','Arial Narrow',sans-serif}
+.wk div{font-size:9px}
 </style>
 </head>
 <body>
@@ -147,17 +167,7 @@ select{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid 
   <h1>Corridas</h1>
   <div id="list"></div>
  </section>
- <section id="s2" class="scr">
-  <h1>Metas e recordes</h1>
-  <div class="row"><b>Meta semanal</b><span><b id="gv" class="num">0</b> km</span></div>
-  <div class="bar"><i id="gb"></i></div>
-  <div class="row"><span id="gt" style="color:var(--mut)"></span><button id="bgoal" class="link" style="padding:0">Alterar meta</button></div>
-  <h2>Últimas 8 semanas</h2>
-  <div class="wk" id="wk"></div>
-  <h2>Recordes</h2>
-  <div class="pr" id="pr"></div>
- </section>
- <section id="s3" class="scr">
+  <section id="s3" class="scr">
   <h1>Desempenho</h1>
   <p class="note">Uma visão consolidada da sua evolução com base nas corridas salvas neste aparelho.</p>
   <div class="metric-grid" id="performanceMetrics"></div>
@@ -166,14 +176,24 @@ select{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid 
   <div class="panel"><h2 style="margin-top:0">Recordes de distância</h2><div id="distanceRecords" class="metric-grid"></div><p class="note">Os recordes de 5 km e 10 km são calculados a partir dos pontos GPS das corridas registradas. Corridas manuais não entram nesse cálculo.</p></div>
   <div class="panel"><h2 style="margin-top:0">Resumo de consistência</h2><div id="consistency"></div></div>
  </section>
- <section id="s4" class="scr">
-  <h1>Perfil</h1>
-  <div class="panel"><label for="runnerName">Nome do corredor</label><input type="text" id="runnerName" maxlength="40" placeholder="Como devemos chamar você?"><button class="main" id="saveProfile" style="width:100%;margin-top:12px">Salvar perfil</button></div>
-  <h2>Seus dados</h2>
-  <button class="profile-action" id="exportBackup">⬇ Exportar backup completo (JSON)</button>
-  <label class="profile-action" style="display:block;cursor:pointer">⬆ Restaurar backup JSON <input type="file" id="importBackup" accept="application/json,.json" hidden></label>
-  <button class="profile-action" id="exportAllGpx">⇧ Exportar trajetos GPX</button>
-  <div class="panel"><b>Armazenamento e privacidade</b><p class="note">Suas corridas e perfil ficam salvos localmente neste navegador. O backup é manual; mantenha uma cópia fora do aparelho. O Pista não envia seus dados para um servidor.</p><p class="note" id="storageInfo"></p></div>
+  <section id="s4" class="scr">
+  <div class="pf-head"><button class="pf-av" id="pfAv" aria-label="Foto do perfil"></button><div><div class="pf-name" id="pfName"></div><div class="pf-sub" id="pfCount"></div></div></div>
+  <div class="pf-streak" id="pfStreak"></div>
+  <div class="pf-btns"><button class="pf-btn" id="pfEdit">Editar perfil</button><button class="pf-btn" id="pfShare">Compartilhar perfil</button></div>
+  <div class="pf-tabs"><button class="on" data-p="0">Progresso</button><button data-p="1">Atividades</button><button data-p="2">Recordes</button><button data-p="3">Mais</button></div>
+  <div class="pf-pane on" id="pp0"><div class="card"><h2 style="margin-top:0">Esta semana</h2>
+   <div class="wkstats"><div><small>Distância</small><b id="wDist">0 km</b></div><div><small>Tempo</small><b id="wTime">0min</b></div><div><small>Elevação</small><b id="wElev">0 m</b></div></div>
+   <small style="color:var(--mut)">Últimas 12 semanas (km)</small><div class="wk" id="wk"></div>
+   <div class="row" style="margin-top:14px"><b>Meta semanal</b><span><b id="gv" class="num">0</b> km</span></div><div class="bar"><i id="gb"></i></div>
+   <div class="row"><span id="gt" style="color:var(--mut)"></span><button id="bgoal" class="link" style="padding:0">Alterar meta</button></div></div></div>
+  <div class="pf-pane" id="pp1"><div id="pfList"></div></div>
+  <div class="pf-pane" id="pp2"><div class="pr" id="pr"></div></div>
+  <div class="pf-pane" id="pp3">
+   <button class="profile-action" id="exportBackup">⬇ Exportar backup completo (JSON)</button>
+   <label class="profile-action" style="display:block;cursor:pointer">⬆ Restaurar backup JSON <input type="file" id="importBackup" accept="application/json,.json" hidden></label>
+   <button class="profile-action" id="exportAllGpx">⇧ Exportar trajetos GPX</button>
+   <div class="panel"><b>Armazenamento e privacidade</b><p class="note">Suas corridas e perfil ficam salvos localmente neste aparelho. O backup é manual; mantenha uma cópia fora do aparelho. O Pista não envia seus dados para um servidor.</p><p class="note" id="storageInfo"></p></div>
+  </div>
  </section>
  <section id="s5" class="scr">
   <h1>Treinador inteligente</h1>
@@ -192,12 +212,11 @@ select{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid 
  </section>
 </main>
 <nav>
- <a href="#" data-t="0" class="on">Correr</a>
- <a href="#" data-t="1">Corridas</a>
- <a href="#" data-t="2">Metas</a>
- <a href="#" data-t="3">Desempenho</a>
- <a href="#" data-t="4">Perfil</a>
- <a href="#" data-t="5">Treinador</a>
+ <a href="#" data-t="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg><span>Início</span></a>
+ <a href="#" data-t="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20v-7M12 20V5M19 20v-10"/></svg><span>Desempenho</span></a>
+ <a href="#" data-t="0" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5" fill="currentColor"/></svg><span>Correr</span></a>
+ <a href="#" data-t="5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM8.5 13l2 2 4-4.5"/></svg><span>Treinador</span></a>
+ <a href="#" data-t="4"><span id="navMe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.7"/><path d="M4.5 20c.8-4 3.8-6 7.5-6s6.7 2 7.5 6"/></svg></span><span>Você</span></a>
 </nav>
 <div id="sheet" hidden><div id="sin"></div></div>
 
@@ -209,6 +228,22 @@ let runs=store.get('pista.runs',[]),goal=store.get('pista.goal',20),gps=null;
 let profile=store.get('pista.profile',{name:''});
 let coachPrefs=store.get('pista.coachPrefs',{goal:'base',level:'beginner'});
 let coachPlan=store.get('pista.coachPlan',null);
+/* App Android (Capacitor): GPS em segundo plano e salvamento de arquivos; na web continua igual */
+const NATIVE=!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
+const BG=NATIVE?Capacitor.registerPlugin('BackgroundGeolocation'):null;
+function gpsStart(){
+ if(!BG){S.wid=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:0,timeout:20000});return}
+ S.wid=BG.addWatcher({backgroundTitle:'Pista · gravando corrida',backgroundMessage:'Toque para voltar ao app.',requestPermissions:true,stale:false,distanceFilter:0},(l,e)=>{
+  if(e){onErr({code:e.code==='NOT_AUTHORIZED'?1:2});return}
+  onPos({coords:{accuracy:l.accuracy,latitude:l.latitude,longitude:l.longitude,altitude:l.altitude},timestamp:l.time})})}
+function gpsStop(){const w=S.wid;S.wid=null;if(w==null)return;
+ if(BG)Promise.resolve(w).then(id=>BG.removeWatcher({id})).catch(()=>{});else navigator.geolocation.clearWatch(w)}
+async function saveFile(blob,name){
+ if(!NATIVE){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);return}
+ try{const b64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=no;r.readAsDataURL(blob)});
+  const f=await Capacitor.registerPlugin('Filesystem').writeFile({path:name,data:b64,directory:'CACHE'});
+  await Capacitor.registerPlugin('Share').share({title:name,url:f.uri,dialogTitle:'Salvar ou enviar'})
+ }catch(e){if(!/cancel/i.test(String((e&&e.message)||e)))alert('Não foi possível salvar o arquivo.')}}
 const esc=s=>String(s==null?'':s).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
 function normRun(r){const n=v=>Number.isFinite(Number(v))?Number(v):0,a=x=>Array.isArray(x)?x:[];return{...r,id:n(r.id),date:n(r.date),dist:n(r.dist),time:n(r.time),pts:a(r.pts).filter(p=>Array.isArray(p)&&p.length>=4),splits:a(r.splits).map(Number).filter(Number.isFinite),laps:a(r.laps).map(l=>({n:String(l&&l.n!=null?l.n:''),t:n(l&&l.t),d:n(l&&l.d)})),hr:r.hr&&Number(r.hr.avg)>0?{avg:Math.round(Number(r.hr.avg)),max:Number(r.hr.max)>0?Math.round(Number(r.hr.max)):undefined}:null}}
 runs=(Array.isArray(runs)?runs:[]).map(normRun).filter(r=>r.dist>0&&r.time>0);
@@ -289,8 +324,8 @@ function photoCard(r){
  const load=e=>{const f=e.target.files[0];if(!f)return;const img=new Image();img.onload=()=>{cardDraw(r,img);URL.revokeObjectURL(img.src)};img.src=URL.createObjectURL(f)};
  $('#f1').onchange=$('#f2').onchange=load;
  const nm='pista-'+new Date(r.date).toISOString().slice(0,10)+'.jpg',blob=cb=>$('#pc').toBlob(cb,'image/jpeg',.92);
- $('#fd').onclick=()=>blob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=nm;document.body.appendChild(a);a.click();a.remove()});
- $('#fs').onclick=()=>blob(b=>{const f=new File([b],nm,{type:'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'Minha corrida'}).catch(()=>{});else alert('Compartilhar não está disponível aqui. Use Salvar na galeria.')});
+ $('#fd').onclick=()=>blob(b=>saveFile(b,nm));
+ $('#fs').onclick=()=>blob(b=>{if(NATIVE)return saveFile(b,nm);const f=new File([b],nm,{type:'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'Minha corrida'}).catch(()=>{});else alert('Compartilhar não está disponível aqui. Use Salvar na galeria.')});
  $('#fx').onclick=()=>{close();openRun(r.id)};
  cardDraw(r,null)}
 
@@ -317,7 +352,7 @@ function planSheet(){const d=plan||{},f=(id,l,v,im)=>`<label for="${id}">${l}</l
 /* GPS */
 function chip(){const c=$('#chip');if(S.st==='idle'){c.textContent='GPS desligado';c.className='';return}
  if(gps==null){c.textContent='Buscando sinal…';c.className='fraco'}else if(gps<=15){c.textContent='GPS forte';c.className='ok'}else{c.textContent='GPS fraco';c.className='fraco'}}
-function onErr(e){if(e.code===1){alert('Permita o acesso à localização no Chrome para registrar a corrida.');reset()}else{gps=null;chip()}}
+function onErr(e){if(e.code===1){alert('Permita o acesso à localização para registrar a corrida.');reset()}else{gps=null;chip()}}
 function onPos(p){
  const a=p.coords.accuracy;gps=a;chip();
  if(S.st!=='running'||!Number.isFinite(a)||a>30)return;
@@ -346,16 +381,16 @@ function ui(){const m=$('#bmain'),e=$('#bend');
  else if(S.st==='running'){m.textContent='Pausar';m.className='main dark';e.disabled=false}
  else{m.textContent='Continuar';m.className='main';e.disabled=false}
  $('#bman').hidden=$('#bplan').hidden=S.st!=='idle';$('#bplan').textContent='Treino: '+(plan?plan.nome:'corrida livre');chip();live()}
-function stop(){if(S.wid!=null)navigator.geolocation.clearWatch(S.wid);clearInterval(S.tick);try{S.wl&&S.wl.release()}catch(e){}S.wid=null;S.wl=null}
+function stop(){gpsStop();clearInterval(S.tick);try{S.wl&&S.wl.release()}catch(e){}S.wl=null}
 function reset(){stop();clearActiveSession();S={st:'idle',pts:[],dist:0,act:0,last:0,splits:[],sg:[],si:0,s0:{e:0,d:0},laps:[],wid:null,tick:null,wl:null,gap:true,ptT:0,start:0};gps=null;ui()}
 function start(){
- if(!navigator.geolocation){alert('Este navegador não tem acesso a GPS.');return}
+ if(!BG&&!navigator.geolocation){alert('Este navegador não tem acesso a GPS.');return}
  S.st='running';S.last=Date.now();S.start=Date.now();S.gap=true;hrv=[];S.sg=segs(plan);S.si=0;S.s0={e:0,d:0};S.laps=[];if(S.sg.length)say(S.sg[0].n+', '+lab(S.sg[0]));
- S.wid=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:0,timeout:20000});
+ gpsStart();
  S.tick=setInterval(live,1000);lock();saveActiveSession();ui();say('Corrida iniciada.')}
 function toggle(){
  if(S.st==='idle')return start();
- if(S.st==='running'){S.act+=Date.now()-S.last;S.st='paused';if(S.wid!=null)navigator.geolocation.clearWatch(S.wid);S.wid=null;try{S.wl&&S.wl.release()}catch(e){}S.wl=null}else{S.last=Date.now();S.gap=true;S.st='running';S.wid=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:0,timeout:20000});clearInterval(S.tick);S.tick=setInterval(live,1000);lock()}
+ if(S.st==='running'){S.act+=Date.now()-S.last;S.st='paused';gpsStop();try{S.wl&&S.wl.release()}catch(e){}S.wl=null}else{S.last=Date.now();S.gap=true;S.st='running';gpsStart();clearInterval(S.tick);S.tick=setInterval(live,1000);lock()}
  saveActiveSession();ui()}
 function routeStats(points){
  const P=Array.isArray(points)?points:[];let ascent=0,maxSpeed=0,accSum=0,accN=0;
@@ -406,22 +441,22 @@ function finish(){
 $('#bmain').onclick=toggle;$('#bend').onclick=finish;
 
 /* Telas */
-function tab(n){document.querySelectorAll('.scr').forEach((s,i)=>s.classList.toggle('on',i==n));document.querySelectorAll('nav a').forEach((a,i)=>a.classList.toggle('on',i==n));
- if(n==0)live();if(n==1)renderList();if(n==2)renderGoals();if(n==3)renderPerformance();if(n==4)renderProfile();if(n==5)renderCoach();$('main').scrollTop=0}
+function tab(n){document.querySelectorAll('.scr').forEach(x=>x.classList.toggle('on',x.id==='s'+n));document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',+a.dataset.t===n));
+ if(n==0)live();if(n==1)renderList();if(n==3)renderPerformance();if(n==4)renderProfile();if(n==5)renderCoach();$('main').scrollTop=0}
 document.querySelectorAll('nav a').forEach(a=>a.onclick=e=>{e.preventDefault();tab(+a.dataset.t)});
 const sorted=()=>[...runs].sort((a,b)=>b.date-a.date);
-function renderList(){const L=$('#list');
+function renderList(){['#list','#pfList'].forEach(sel=>{const L=$(sel);if(!L)return;
  if(!runs.length){L.innerHTML='<div class="empty">Nenhuma corrida ainda. Toque em Correr para começar.</div>';return}
  L.innerHTML=sorted().map(r=>`<button class="item" data-id="${r.id}"><span><b class="num">${fK(r.dist)} km</b><small>${fD(r.date)}${r.manual?' · manual':''}</small></span><span class="r"><b class="num">${fT(r.time)}</b><small>${fP(r.time/(r.dist/1000))} /km</small></span></button>`).join('');
- L.querySelectorAll('.item').forEach(b=>b.onclick=()=>openRun(+b.dataset.id))}
+ L.querySelectorAll('.item').forEach(b=>b.onclick=()=>openRun(+b.dataset.id))})}
 function weekStart(ts,back=0){const d=new Date(ts);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)-7*back);return d.getTime()}
 function renderGoals(){
- const ws=[];for(let i=7;i>=0;i--)ws.push(weekStart(Date.now(),i));
- const tot=ws.map((s,i)=>runs.filter(r=>r.date>=s&&(i==7||r.date<ws[i+1])).reduce((a,r)=>a+r.dist,0)/1000);
- const cur=tot[7];$('#gv').textContent=cur.toFixed(1).replace('.',',');$('#gb').style.width=Math.min(100,cur/goal*100)+'%';
+ const ws=[];for(let i=11;i>=0;i--)ws.push(weekStart(Date.now(),i));
+ const tot=ws.map((s,i)=>runs.filter(r=>r.date>=s&&(i==11||r.date<ws[i+1])).reduce((a,r)=>a+r.dist,0)/1000);
+ const cur=tot[11];{const wr=runs.filter(r=>r.date>=ws[11]);$('#wDist').textContent=cur.toFixed(2).replace('.',',')+' km';$('#wTime').textContent=fHM(wr.reduce((a,r)=>a+r.time,0));$('#wElev').textContent=Math.round(wr.reduce((a,r)=>a+((r.gpsStats||routeStats(r.pts)).ascent||0),0))+' m'}$('#gv').textContent=cur.toFixed(1).replace('.',',');$('#gb').style.width=Math.min(100,cur/goal*100)+'%';
  $('#gt').textContent=cur>=goal?`Meta de ${goal} km batida!`:`Faltam ${(goal-cur).toFixed(1).replace('.',',')} km de ${goal} km`;
  const mx=Math.max(...tot,goal,1);
- $('#wk').innerHTML=tot.map((v,i)=>`<div class="${i==7?'cur':''}"><span>${v?v.toFixed(0):''}</span><i style="height:${v/mx*80}px"></i><span>${new Date(ws[i]).getDate()}/${new Date(ws[i]).getMonth()+1}</span></div>`).join('');
+ $('#wk').innerHTML=tot.map((v,i)=>`<div class="${i==11?'cur':''}"><span>${v?v.toFixed(0):''}</span><i style="height:${v/mx*80}px"></i><span>${new Date(ws[i]).getDate()}/${new Date(ws[i]).getMonth()+1}</span></div>`).join('');
  const km=runs.reduce((a,r)=>a+r.dist,0)/1000,ok=runs.filter(r=>r.dist>=1000);
  const best=ok.length?Math.min(...ok.map(r=>r.time/(r.dist/1000))):NaN,lng=runs.length?Math.max(...runs.map(r=>r.dist)):0;
  let bk=Infinity;runs.forEach(r=>(r.splits||[]).forEach((t,i)=>{bk=Math.min(bk,t-(r.splits[i-1]||0))}));
@@ -565,12 +600,26 @@ $('#coachRebuild').onclick=()=>{saveCoachPrefs();coachBuildPlan(coachMetrics());
 $('#coachGoal').onchange=saveCoachPrefs;$('#coachLevel').onchange=saveCoachPrefs;
 
 /* Perfil e backup */
+const USER_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.7"/><path d="M4.5 20c.8-4 3.8-6 7.5-6s6.7 2 7.5 6"/></svg>',FLAME='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.48 12.35c-1.57-4.08-7.16-4.3-5.81-10.23.1-.44-.37-.78-.75-.55C9.29 3.71 6.68 8 8.87 13.62c.18.46-.36.89-.75.59-1.81-1.37-2-3.34-1.84-4.75.06-.52-.62-.77-.91-.34C4.69 10.16 4 11.84 4 14.37c.38 5.6 5.11 7.32 6.81 7.54 2.43.31 5.06-.14 6.95-1.87 2.08-1.93 2.84-5.01 1.72-7.69zm-9.28 5.03c1.44-.35 2.18-1.39 2.38-2.31.33-1.43-.96-2.83-.09-5.09.33 1.87 3.27 3.04 3.27 5.08.08 2.53-2.66 4.7-5.56 2.32z"/></svg>';
+const avatarHTML=()=>profile.photo?`<img src="${profile.photo}" alt="">`:USER_SVG;
+function navAvatar(){const m=$('#navMe');if(m)m.innerHTML=profile.photo?`<img class="navav" src="${profile.photo}" alt="">`:USER_SVG}
+function fHM(s){s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+'h '+m+'min':m+'min '+pad(s%60)+'s'}
+function streakWeeks(){const set=new Set(runs.map(r=>weekStart(r.date)));let w=weekStart(Date.now());if(!set.has(w))w=weekStart(Date.now(),1);let n=0;while(set.has(w)){n++;const d=new Date(w);d.setDate(d.getDate()-7);w=d.getTime()}return n}
 function renderProfile(){
- $('#runnerName').value=profile.name||'';
- let used=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);used+=(k.length+(localStorage.getItem(k)||'').length)*2}}catch(e){}const pct=Math.round(used/5242880*100);$('#storageInfo').textContent=`${runs.length} corrida(s) neste aparelho · ${(used/1048576).toFixed(1).replace('.',',')} MB de cerca de 5 MB usados (${pct}%).${pct>=70?' Espaço quase cheio: exporte um backup e apague corridas antigas.':''}`;
+ $('#pfName').textContent=profile.name||'Corredor';$('#pfCount').textContent=runs.length+(runs.length===1?' atividade':' atividades');
+ const st=streakWeeks();$('#pfStreak').innerHTML=st?FLAME+'<b>'+st+'</b> '+(st===1?'semana seguida':'semanas seguidas'):'<span style="color:var(--mut)">Corra esta semana para começar sua sequência</span>';
+ $('#pfAv').innerHTML=avatarHTML();navAvatar();renderGoals();renderList();
+ let used=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);used+=(k.length+(localStorage.getItem(k)||'').length)*2}}catch(e){}const pct=Math.round(used/5242880*100);
+ $('#storageInfo').textContent=`${runs.length} corrida(s) neste aparelho · ${(used/1048576).toFixed(1).replace('.',',')} MB de cerca de 5 MB usados (${pct}%).${pct>=70?' Espaço quase cheio: exporte um backup e apague corridas antigas.':''}`;
 }
-$('#saveProfile').onclick=()=>{profile={...profile,name:$('#runnerName').value.trim()};store.set('pista.profile',profile);alert('Perfil salvo.')};
-function downloadBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+$('#pfEdit').onclick=()=>{sheet(`<h1>Editar perfil</h1><div style="display:flex;align-items:center;gap:14px;margin:8px 0"><div class="pf-av" id="epAv">${avatarHTML()}</div><div style="display:flex;flex-direction:column;gap:8px;flex:1"><label class="lb" style="padding:12px">Tirar foto<input type="file" accept="image/*" capture="user" id="epF" hidden></label><label class="lb" style="padding:12px">Escolher da galeria<input type="file" accept="image/*" id="epG" hidden></label></div></div><label for="epN">Nome</label><input type="text" id="epN" maxlength="40" value="${esc(profile.name||'')}"><div class="btns" style="margin-top:18px"><button class="sec" id="epC">Cancelar</button><button class="main" id="epS">Salvar</button></div>`);
+ let photo=profile.photo||'';
+ $('#epF').onchange=$('#epG').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),q=Math.min(im.width,im.height);c.width=c.height=256;c.getContext('2d').drawImage(im,(im.width-q)/2,(im.height-q)/2,q,q,0,0,256,256);photo=c.toDataURL('image/jpeg',.8);$('#epAv').innerHTML=`<img src="${photo}" alt="">`;URL.revokeObjectURL(im.src)};im.src=URL.createObjectURL(f)};
+ $('#epC').onclick=close;$('#epS').onclick=()=>{profile={...profile,name:$('#epN').value.trim(),photo};store.set('pista.profile',profile);close();renderProfile()}};
+$('#pfShare').onclick=async()=>{const km=(runs.reduce((a,r)=>a+r.dist,0)/1000).toFixed(1).replace('.',','),st=streakWeeks(),t=`${profile.name||'Meu perfil'} no Pista: ${runs.length} atividade(s), ${km} km${st?' e '+st+' semana(s) seguida(s)':''}.`;
+ try{if(NATIVE)await Capacitor.registerPlugin('Share').share({text:t});else if(navigator.share)await navigator.share({text:t});else{await navigator.clipboard.writeText(t);alert('Resumo copiado.')}}catch(e){}};
+document.querySelectorAll('.pf-tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.pf-tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.pf-pane').forEach((x,i)=>x.classList.toggle('on',i==+b.dataset.p))});
+function downloadBlob(blob,name){saveFile(blob,name)}
 $('#exportBackup').onclick=()=>{const data={app:'Pista',schemaVersion:3,exportedAt:new Date().toISOString(),runs,goal,profile,coachPrefs,coachPlan};downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'pista-backup-'+new Date().toISOString().slice(0,10)+'.json')};
 $('#importBackup').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.app!=='Pista'||!Array.isArray(data.runs)||!data.runs.every(r=>Number.isFinite(Number(r.id))&&Number.isFinite(Number(r.dist))&&Number.isFinite(Number(r.time))))throw new Error('Formato inválido');if(!confirm(`O backup contém ${data.runs.length} corrida(s). Deseja mesclar com os dados atuais? Nada será apagado.`))return;const inc=data.runs.map(normRun).filter(r=>r.dist>0&&r.time>0),ids=new Set(inc.map(r=>r.id));runs=[...runs.filter(r=>!ids.has(r.id)),...inc];goal=Number(data.goal)>0?Number(data.goal):20;profile=data.profile&&typeof data.profile==='object'?data.profile:{name:''};coachPrefs=data.coachPrefs&&typeof data.coachPrefs==='object'?data.coachPrefs:{goal:'base',level:'beginner'};coachPlan=data.coachPlan&&typeof data.coachPlan==='object'?data.coachPlan:null;store.set('pista.runs',runs);store.set('pista.goal',goal);store.set('pista.profile',profile);store.set('pista.coachPrefs',coachPrefs);store.set('pista.coachPlan',coachPlan);renderProfile();alert('Backup restaurado com sucesso.');}catch(err){alert('Não foi possível restaurar. Verifique se o arquivo é um backup válido do Pista.')}finally{e.target.value=''}};
 $('#exportAllGpx').onclick=()=>{const tracked=runs.filter(r=>Array.isArray(r.pts)&&r.pts.length>1);if(!tracked.length){alert('Não há trajetos GPS para exportar.');return}const esc=s=>String(s).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));let xml='<?xml version="1.0" encoding="UTF-8"?><gpx version="1.1" creator="Pista" xmlns="http://www.topografix.com/GPX/1/1">';for(const r of tracked){xml+=`<trk><name>${esc('Corrida '+new Date(r.date).toLocaleDateString('pt-BR'))}</name><trkseg>`;for(const pt of r.pts)xml+=`<trkpt lat="${pt[0]}" lon="${pt[1]}">${Number.isFinite(pt[4])?`<ele>${pt[4].toFixed(1)}</ele>`:''}<time>${new Date(r.date+pt[3]*1000).toISOString()}</time></trkpt>`;xml+='</trkseg></trk>'}xml+='</gpx>';downloadBlob(new Blob([xml],{type:'application/gpx+xml'}),'pista-todos-trajetos.gpx')};
@@ -598,7 +647,7 @@ function openRun(id){const r=runs.find(x=>x.id==id);if(!r)return;
 function gpx(r){const iso=new Date(r.date).toISOString();
  let s='<?xml version="1.0" encoding="UTF-8"?><gpx version="1.1" creator="Pista" xmlns="http://www.topografix.com/GPX/1/1"><trk><name>Corrida '+iso.slice(0,10)+'</name><trkseg>';
  r.pts.forEach(p=>{s+=`<trkpt lat="${p[0]}" lon="${p[1]}">${Number.isFinite(p[4])?`<ele>${p[4].toFixed(1)}</ele>`:''}<time>${new Date(r.date+p[3]*1000).toISOString()}</time></trkpt>`});s+='</trkseg></trk></gpx>';
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([s],{type:'application/gpx+xml'}));a.download='corrida-'+iso.slice(0,10)+'.gpx';document.body.appendChild(a);a.click();a.remove()}
+ saveFile(new Blob([s],{type:'application/gpx+xml'}),'corrida-'+iso.slice(0,10)+'.gpx')}
 $('#bman').onclick=()=>{const d=new Date(),t=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
  sheet(`<h1>Corrida manual</h1><label for="md">Data</label><input type="date" id="md" value="${t}"><label for="mk">Distância (km)</label><input type="text" id="mk" inputmode="decimal" placeholder="5,2"><label for="mt">Tempo (mm:ss ou h:mm:ss)</label><input type="text" id="mt" inputmode="numeric" placeholder="28:30"><label for="mh">Batimentos médios, bpm (opcional)</label><input type="text" id="mh" inputmode="numeric" placeholder="150">
  <div class="btns" style="margin-top:18px"><button class="sec" id="mc">Cancelar</button><button class="main" id="ms">Salvar corrida</button></div>`);
@@ -611,14 +660,15 @@ $('#bman').onclick=()=>{const d=new Date(),t=d.getFullYear()+'-'+pad(d.getMonth(
 addEventListener('resize',()=>{if($('#s0').classList.contains('on'))live()});
 $('#bplan').onclick=planSheet;if(navigator.bluetooth)$('#bhr').hidden=false;$('#bhr').onclick=connHR;
 /* Instalação como app (PWA) */
-if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+if(!NATIVE&&'serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 let ip=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;$('#binst').hidden=false});
 $('#binst').onclick=async()=>{if(!ip)return;ip.prompt();await ip.userChoice;ip=null;$('#binst').hidden=true};
 addEventListener('appinstalled',()=>{$('#binst').hidden=true});
 const sp=$('#splash');let seen=false;try{seen=sessionStorage.getItem('pista.sp')}catch(e){}
 if(seen)sp.remove();else{try{sessionStorage.setItem('pista.sp','1')}catch(e){}setTimeout(()=>{sp.classList.add('off');setTimeout(()=>sp.remove(),500)},1400)}
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
-restoreActiveSession();
+if(NATIVE)try{Capacitor.registerPlugin('LocalNotifications').requestPermissions().catch(()=>{})}catch(e){}
+navAvatar();restoreActiveSession();
 ui();
 </script>
 </body>
