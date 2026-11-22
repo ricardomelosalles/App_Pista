@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#081426">
 <meta name="description" content="Pista — acompanhe suas corridas, evolução e metas com GPS.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pista – corrida com GPS">
+<meta property="og:description" content="Registre corridas com GPS, acompanhe sua evolução e metas.">
 <title>Pista – corrida com GPS</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
@@ -238,11 +241,11 @@ function gpsStart(){
   onPos({coords:{accuracy:l.accuracy,latitude:l.latitude,longitude:l.longitude,altitude:l.altitude},timestamp:l.time})})}
 function gpsStop(){const w=S.wid;S.wid=null;if(w==null)return;
  if(BG)Promise.resolve(w).then(id=>BG.removeWatcher({id})).catch(()=>{});else navigator.geolocation.clearWatch(w)}
-async function saveFile(blob,name){
+async function saveFile(blob,name,text){
  if(!NATIVE){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);return}
  try{const b64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=no;r.readAsDataURL(blob)});
   const f=await Capacitor.registerPlugin('Filesystem').writeFile({path:name,data:b64,directory:'CACHE'});
-  await Capacitor.registerPlugin('Share').share({title:name,url:f.uri,dialogTitle:'Salvar ou enviar'})
+  await Capacitor.registerPlugin('Share').share(text?{title:name,text,files:[f.uri],dialogTitle:'Compartilhar'}:{title:name,url:f.uri,dialogTitle:'Salvar ou enviar'})
  }catch(e){if(!/cancel/i.test(String((e&&e.message)||e)))alert('Não foi possível salvar o arquivo.')}}
 const esc=s=>String(s==null?'':s).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
 function normRun(r){const n=v=>Number.isFinite(Number(v))?Number(v):0,a=x=>Array.isArray(x)?x:[];return{...r,id:n(r.id),date:n(r.date),dist:n(r.dist),time:n(r.time),pts:a(r.pts).filter(p=>Array.isArray(p)&&p.length>=4),splits:a(r.splits).map(Number).filter(Number.isFinite),laps:a(r.laps).map(l=>({n:String(l&&l.n!=null?l.n:''),t:n(l&&l.t),d:n(l&&l.d)})),hr:r.hr&&Number(r.hr.avg)>0?{avg:Math.round(Number(r.hr.avg)),max:Number(r.hr.max)>0?Math.round(Number(r.hr.max)):undefined}:null}}
@@ -612,12 +615,36 @@ function renderProfile(){
  let used=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);used+=(k.length+(localStorage.getItem(k)||'').length)*2}}catch(e){}const pct=Math.round(used/5242880*100);
  $('#storageInfo').textContent=`${runs.length} corrida(s) neste aparelho · ${(used/1048576).toFixed(1).replace('.',',')} MB de cerca de 5 MB usados (${pct}%).${pct>=70?' Espaço quase cheio: exporte um backup e apague corridas antigas.':''}`;
 }
-$('#pfEdit').onclick=()=>{sheet(`<h1>Editar perfil</h1><div style="display:flex;align-items:center;gap:14px;margin:8px 0"><div class="pf-av" id="epAv">${avatarHTML()}</div><div style="display:flex;flex-direction:column;gap:8px;flex:1"><label class="lb" style="padding:12px">Tirar foto<input type="file" accept="image/*" capture="user" id="epF" hidden></label><label class="lb" style="padding:12px">Escolher da galeria<input type="file" accept="image/*" id="epG" hidden></label></div></div><label for="epN">Nome</label><input type="text" id="epN" maxlength="40" value="${esc(profile.name||'')}"><div class="btns" style="margin-top:18px"><button class="sec" id="epC">Cancelar</button><button class="main" id="epS">Salvar</button></div>`);
+$('#pfEdit').onclick=()=>{sheet(`<h1>Editar perfil</h1><div style="display:flex;align-items:center;gap:14px;margin:8px 0"><div class="pf-av" id="epAv">${avatarHTML()}</div><div style="display:flex;flex-direction:column;gap:8px;flex:1"><label class="lb" style="padding:12px">Tirar foto<input type="file" accept="image/*" capture="user" id="epF" hidden></label><label class="lb" style="padding:12px">Escolher da galeria<input type="file" accept="image/*" id="epG" hidden></label></div></div><label for="epN">Nome</label><input type="text" id="epN" maxlength="40" value="${esc(profile.name||'')}"><label for="epL">Link do Pista (opcional, vai junto ao compartilhar)</label><input type="text" id="epL" inputmode="url" placeholder="https://seuusuario.github.io/pista" value="${esc(profile.link||'')}"><div class="btns" style="margin-top:18px"><button class="sec" id="epC">Cancelar</button><button class="main" id="epS">Salvar</button></div>`);
  let photo=profile.photo||'';
  $('#epF').onchange=$('#epG').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),q=Math.min(im.width,im.height);c.width=c.height=256;c.getContext('2d').drawImage(im,(im.width-q)/2,(im.height-q)/2,q,q,0,0,256,256);photo=c.toDataURL('image/jpeg',.8);$('#epAv').innerHTML=`<img src="${photo}" alt="">`;URL.revokeObjectURL(im.src)};im.src=URL.createObjectURL(f)};
- $('#epC').onclick=close;$('#epS').onclick=()=>{profile={...profile,name:$('#epN').value.trim(),photo};store.set('pista.profile',profile);close();renderProfile()}};
-$('#pfShare').onclick=async()=>{const km=(runs.reduce((a,r)=>a+r.dist,0)/1000).toFixed(1).replace('.',','),st=streakWeeks(),t=`${profile.name||'Meu perfil'} no Pista: ${runs.length} atividade(s), ${km} km${st?' e '+st+' semana(s) seguida(s)':''}.`;
- try{if(NATIVE)await Capacitor.registerPlugin('Share').share({text:t});else if(navigator.share)await navigator.share({text:t});else{await navigator.clipboard.writeText(t);alert('Resumo copiado.')}}catch(e){}};
+ $('#epC').onclick=close;$('#epS').onclick=()=>{profile={...profile,name:$('#epN').value.trim(),link:$('#epL').value.trim(),photo};store.set('pista.profile',profile);close();renderProfile()}};
+async function profileCard(){
+ try{await document.fonts.load('700 100px "Barlow Condensed"')}catch(e){}
+ const img=src=>new Promise(ok=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>ok(null);i.src=src});
+ const [lg,av]=await Promise.all([img('logo.png'),profile.photo?img(profile.photo):Promise.resolve(null)]);
+ const c=document.createElement('canvas'),W=1200,H=630,g=c.getContext('2d'),F="'Barlow Condensed','Arial Narrow',sans-serif";c.width=W;c.height=H;
+ const gr=g.createLinearGradient(0,0,W,H);gr.addColorStop(0,'#0B3BD9');gr.addColorStop(.5,'#050A1C');gr.addColorStop(1,'#02040F');g.fillStyle=gr;g.fillRect(0,0,W,H);
+ g.lineCap='round';[[-60,420,700,40,.45],[500,630,1250,260,.3],[-40,200,380,-20,.3]].forEach(l=>{g.strokeStyle='rgba(60,200,255,'+l[4]+')';g.lineWidth=5;g.beginPath();g.moveTo(l[0],l[1]);g.lineTo(l[2],l[3]);g.stroke()});
+ const cx=170,cy=190,r=100;g.save();g.beginPath();g.arc(cx,cy,r,0,7);g.clip();
+ if(av){const q=Math.min(av.width,av.height);g.drawImage(av,(av.width-q)/2,(av.height-q)/2,q,q,cx-r,cy-r,2*r,2*r)}
+ else{g.fillStyle='#16306B';g.fillRect(cx-r,cy-r,2*r,2*r);g.fillStyle='#fff';g.font=`700 110px ${F}`;g.textAlign='center';g.fillText((profile.name||'P').trim().charAt(0).toUpperCase()||'P',cx,cy+38)}
+ g.restore();g.strokeStyle='#fff';g.lineWidth=5;g.beginPath();g.arc(cx,cy,r,0,7);g.stroke();
+ const km=runs.reduce((a,x)=>a+x.dist,0)/1000,st=streakWeeks(),wk=runs.filter(x=>x.date>=weekStart(Date.now())).reduce((a,x)=>a+x.dist,0)/1000;
+ g.fillStyle='#fff';g.textAlign='left';const nm=profile.name||'Corredor';let fs=84;g.font=`700 ${fs}px ${F}`;while(g.measureText(nm).width>650&&fs>40){fs-=4;g.font=`700 ${fs}px ${F}`}
+ g.fillText(nm,310,180);g.font=`600 40px ${F}`;g.globalAlpha=.85;g.fillText(runs.length+(runs.length===1?' atividade':' atividades'),310,235);g.globalAlpha=1;
+ [[km.toFixed(1).replace('.',','),'km no total'],[wk.toFixed(1).replace('.',','),'km esta semana'],[st,st===1?'semana seguida':'semanas seguidas']].forEach((x,i)=>{const px=80+i*360;g.font=`700 110px ${F}`;g.fillText(x[0],px,470);g.font=`600 38px ${F}`;g.globalAlpha=.85;g.fillText(x[1],px,520);g.globalAlpha=1});
+ if(lg){const h=90,w=lg.width/lg.height*h;g.drawImage(lg,W-60-w,40,w,h)}
+ g.font=`600 32px ${F}`;g.globalAlpha=.7;g.fillText('Veja meu perfil no Pista',80,590);g.globalAlpha=1;
+ return new Promise(ok=>c.toBlob(ok,'image/jpeg',.92))}
+$('#pfShare').onclick=async()=>{const btn=$('#pfShare');btn.disabled=true;
+ try{const blob=await profileCard(),nm='pista-perfil.jpg',web=/^https?:$/.test(location.protocol)&&!/^(localhost|127\.)/.test(location.hostname)?location.href.split(/[?#]/)[0].replace(/index\.html$/,''):'',lk=/^https?:\/\//i.test(profile.link||'')?profile.link:web,
+  txt='Veja o perfil de '+(profile.name||'um corredor')+' no Pista'+(lk?'\n'+lk:'');
+  if(NATIVE){await saveFile(blob,nm,txt);return}
+  const f=new File([blob],nm,{type:'image/jpeg'});
+  if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:txt,title:'Perfil no Pista'});
+  else{await saveFile(blob,nm);try{await navigator.clipboard.writeText(txt)}catch(e){}alert('Cartão salvo e texto copiado. Envie os dois juntos.')}
+ }catch(e){}finally{btn.disabled=false}};
 document.querySelectorAll('.pf-tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.pf-tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.pf-pane').forEach((x,i)=>x.classList.toggle('on',i==+b.dataset.p))});
 function downloadBlob(blob,name){saveFile(blob,name)}
 $('#exportBackup').onclick=()=>{const data={app:'Pista',schemaVersion:3,exportedAt:new Date().toISOString(),runs,goal,profile,coachPrefs,coachPlan};downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'pista-backup-'+new Date().toISOString().slice(0,10)+'.json')};
